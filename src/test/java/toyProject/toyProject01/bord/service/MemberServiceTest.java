@@ -19,14 +19,14 @@ class MemberServiceTest {
     @Test
     public void testInsertMember() {
         Member member = new Member();
-        member.setId("user1");
+        member.setId("user3");
         member.setPw("password1");
         member.setNickname("nickname1");
         member.setAge(Date.valueOf("1990-01-01"));
         member.setTel("010-1234-5678");
         member.setEmail("user1@example.com");
 
-        memberService.insertMember(member);
+        memberService.join(member);
     }
 
 

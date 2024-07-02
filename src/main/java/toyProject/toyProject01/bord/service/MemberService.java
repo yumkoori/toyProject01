@@ -11,7 +11,8 @@ public class MemberService {
     @Autowired
     private MemberMapper memberMapper;
 
-    public void insertMember(Member member) {
-        memberMapper.insertMember(member);
+    public void join(Member member) {
+        memberMapper.save(member);
     }
+
 }
