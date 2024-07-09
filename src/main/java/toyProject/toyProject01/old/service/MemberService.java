@@ -14,5 +14,5 @@ public class MemberService {
     public void join(Member member) {
         memberMapper.save(member);
     }
-
 }
+
