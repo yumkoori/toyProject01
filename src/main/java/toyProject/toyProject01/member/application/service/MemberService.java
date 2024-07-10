@@ -23,17 +23,18 @@ public class MemberService implements MemberJoinUseCase {
     @Override
     public boolean Join(RequestJoinDto requestMember) {
 
-        try {
-            log.info("try 진입");
-            Member findMember = loadMemberPort.loadMember(requestMember.getNumber());  //회원 중복 확인
+        //memberId로 회원 조회
+        Member findMember = loadMemberPort.loadMemberWithId(requestMember.getMemberId());
 
+
+
+        //이거 도메인 비즈니스 로직으로 빼야됌.
+        if(findMember.getMemberId().equals(requestMember.getMemberId())) {
+            log.info("이미 존재하는 회원입니다. ");
             return false;
-        } catch (EntityExistsException e) {
-            log.info("예외 잡힘");              //회원 가입 ok
-            log.error(e.getMessage());
         }
 
-        log.info("save 통과함.");
+        //이거 Member로 넣어주는게 맞음. 도메인에서 매핑하던지 어디서 매핑해서 request-> member로
         saveMemberPort.saveMember(requestMember);
         return true;
     }

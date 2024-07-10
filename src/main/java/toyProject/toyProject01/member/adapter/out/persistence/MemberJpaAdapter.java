@@ -22,12 +22,24 @@ public class MemberJpaAdapter implements
     private final SpringDataMemberRepository memberRepository;
     private final MemberMapper memberMapper;
 
-    //회원 number로 가져오기
+    //number로 가져오기
     @Override
-    public Member loadMember(Long memberNumber) {
+    public Member loadMemberWithNumber(Long memberNumber) {
 
         MemberJpaEntity findMember = memberRepository.findById(memberNumber)
                 .orElseThrow(EntityExistsException::new);                            //null일 경우 예외 던짐
+
+        return memberMapper.mapToDomainMember(findMember);
+    }
+
+    @Override
+    public Member loadMemberWithId(String memberId) {
+
+        MemberJpaEntity findMember = memberRepository.findByMemberId(memberId);        //null일수도 있음.
+
+        if (findMember == null) {
+            throw new EntityExistsException("Not found MemberId=" + memberId);
+        }
 
         return memberMapper.mapToDomainMember(findMember);
     }

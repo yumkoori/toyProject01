@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import toyProject.toyProject01.member.adapter.in.web.RequestJoinDto;
+import toyProject.toyProject01.member.adapter.out.persistence.MemberJpaEntity;
 import toyProject.toyProject01.member.adapter.out.persistence.MemberMapper;
 import toyProject.toyProject01.member.adapter.out.persistence.SpringDataMemberRepository;
 
@@ -51,7 +52,33 @@ public class MemberServiceTest {
         // Then
         assertTrue(result);  // 멤버가 존재하지 않으면 가입 성공
 
-
     }
 
+    @Test
+    public void testJoin_False() {
+        MemberJpaEntity memberJpaEntity = new MemberJpaEntity(
+                6L,
+                "yumi",
+                "1234",
+                "test",
+                Date.valueOf("1990-01-01"),
+                "tel",
+                "email"
+        );
+
+        RequestJoinDto requestJoinDto = new RequestJoinDto(
+                6L,
+                "yumi",
+                "1234",
+                "test",
+                Date.valueOf("1990-01-01"),
+                "tel",
+                "email"
+        );
+
+        memberJpaRepository.save(memberJpaEntity);
+
+        boolean result = memberService.Join(requestJoinDto);
+        assertFalse(result);
+    }
 }

@@ -14,7 +14,7 @@ import java.util.Date;
 public class MemberJpaEntity {
 
     @Id @GeneratedValue
-    private Long memberNumber;
+    private Long number;
 
     private String memberId;        //hash로
 
@@ -32,12 +32,13 @@ public class MemberJpaEntity {
 
     }
 
-    public MemberJpaEntity(String memberId, String pw, String nickName, Date age, String tel, String email) {
-        this.memberId = memberId;
-        this.pw = pw;
-        this.nickName = nickName;
-        this.age = age;
-        this.tel = tel;
-        this.email = email;
-    }
+//    public MemberJpaEntity(Long number, String memberId, String pw, String nickName, Date age, String tel, String email) {
+//        this.number = number;
+//        this.memberId = memberId;
+//        this.pw = pw;
+//        this.nickName = nickName;
+//        this.age = age;
+//        this.tel = tel;
+//        this.email = email;
+//    }
 }
