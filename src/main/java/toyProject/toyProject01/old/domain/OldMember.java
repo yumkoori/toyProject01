@@ -1,11 +1,11 @@
-package toyProject.toyProject01.bord.domain;
+package toyProject.toyProject01.old.domain;
 
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class Member {
+public class OldMember {
 
     private String id;
     private String pw;

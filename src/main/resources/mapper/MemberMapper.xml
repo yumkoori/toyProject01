@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="toyProject.toyProject01.bord.mapper.MemberMapper">
+<mapper namespace="toyProject.toyProject01.old.mapper.OldMemberMapper">
     <insert id="save" >        <!--인터페이스 메서드 이름-->
         INSERT INTO member (id, pw, nickname, age, tel, email)
         VALUES (#{id}, #{pw}, #{nickname}, #{age}, #{tel}, #{email})

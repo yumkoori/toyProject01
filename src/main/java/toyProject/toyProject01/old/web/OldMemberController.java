@@ -1,4 +1,4 @@
-package toyProject.toyProject01.bord.web;
+package toyProject.toyProject01.old.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,25 +9,25 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import toyProject.toyProject01.bord.domain.Member;
-import toyProject.toyProject01.bord.service.MemberService;
+import toyProject.toyProject01.old.domain.OldMember;
+import toyProject.toyProject01.old.service.OldMemberService;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class MemberController {
+public class OldMemberController {
 
     @Autowired
-    private MemberService memberService;
+    private OldMemberService oldMemberService;
 
     @GetMapping("/members/join")
     public String joinForm(Model model) {
-        model.addAttribute("memberForm", new MemberForm());
+        model.addAttribute("memberForm", new OldMemberForm());
         return "members/joinMemberForm";
     }
 
     @PostMapping("/members/join")
-    public String join(@ModelAttribute("memberForm") MemberForm form, BindingResult result) {
+    public String join(@ModelAttribute("memberForm") OldMemberForm form, BindingResult result) {
 
        // if (result.hasErrors()) {
 
@@ -40,7 +40,7 @@ public class MemberController {
         //    return "members/joinMemberForm";
        // }
 
-        Member member = new Member();
+        OldMember member = new OldMember();
         member.setId(form.getId());
         member.setPw(form.getPw());
         member.setNickname(form.getNickname());
@@ -48,7 +48,7 @@ public class MemberController {
         member.setTel(form.getTel());
         member.setEmail(form.getEmail());
 
-        memberService.join(member);
+        oldMemberService.join(member);
 
         return "members/joinMemberForm";     //임시 로그인 페이지로 보내줘야함.
     }

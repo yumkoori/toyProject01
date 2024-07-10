@@ -1,24 +1,23 @@
-package toyProject.toyProject01.bord.service;
+package toyProject.toyProject01.old.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import toyProject.toyProject01.bord.domain.Member;
-import toyProject.toyProject01.bord.service.MemberService;
+import toyProject.toyProject01.old.domain.OldMember;
 
 import java.sql.Date;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class MemberServiceTest {
+class OldMemberServiceTest {
 
     @Autowired
-    private MemberService memberService;
+    private OldMemberService oldMemberService;
 
     @Test
     public void testInsertMember() {
-        Member member = new Member();
+        OldMember member = new OldMember();
         member.setId("user3");
         member.setPw("password1");
         member.setNickname("nickname1");
@@ -26,7 +25,7 @@ class MemberServiceTest {
         member.setTel("010-1234-5678");
         member.setEmail("user1@example.com");
 
-        memberService.join(member);
+        oldMemberService.join(member);
     }
 
 
