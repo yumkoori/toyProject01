@@ -2,12 +2,14 @@ package toyProject.toyProject01.member.domain;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import toyProject.toyProject01.member.application.port.in.command.JoinCommand;
 
 import java.security.MessageDigest;
 import java.util.Date;
 import java.util.Optional;
 
+@Slf4j
 @Data
 public class Member {
 
@@ -29,6 +31,14 @@ public class Member {
         this.tel = tel;
         this.email = email;
     }
+
+    public boolean isSamePw (String pw) {
+
+        return pw.equals(this.pw);          //일치하면 true, 틀리면 false;
+    }
+
+
+
 
     public static Member mapToMember(JoinCommand joinCommand) {
         return new Member(joinCommand.getMemberId(),

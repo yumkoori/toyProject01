@@ -5,7 +5,7 @@ import toyProject.toyProject01.member.application.port.in.command.JoinCommand;
 
 public interface MemberJoinUseCase {
 
-    public boolean Join(JoinCommand joinCommand);
+    boolean Join(JoinCommand joinCommand);
 
     //member domian 수정
 }

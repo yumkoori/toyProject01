@@ -12,8 +12,6 @@ import toyProject.toyProject01.member.application.port.out.SaveMemberPort;
 import toyProject.toyProject01.member.application.port.out.UpdateMemberPort;
 import toyProject.toyProject01.member.domain.Member;
 
-import java.sql.Date;
-import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class MemberJpaAdapter implements
@@ -31,7 +29,7 @@ public class MemberJpaAdapter implements
     public Member loadMemberWithNumber(Long memberNumber) {
 
         MemberJpaEntity findMember = memberRepository.findById(memberNumber)
-                .orElseThrow(EntityExistsException::new);                          
+                .orElseThrow(EntityExistsException::new);
 
         return memberMapper.mapToDomainMember(findMember);
     }
@@ -42,10 +40,10 @@ public class MemberJpaAdapter implements
 
         try {
             MemberJpaEntity findMember = memberRepository.findByMemberId(memberId);        //null일수도 있음.
-            log.info("일치하는 회원이 있습니다.");
             return memberMapper.mapToDomainMember(findMember);
         } catch (Exception e) {
-            log.info("해당 회원을 찾을 수 없습니다.");
+            log.info("해당 회원을 찾을 수 없습니다. " );
+            log.info("error", e);
             return null;            //예외로 바꿔야함.
         }
     }
