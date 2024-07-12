@@ -32,6 +32,7 @@ public class MemberJpaAdapter implements
         return memberMapper.mapToDomainMember(findMember);
     }
 
+
     @Override
     public Member loadMemberWithId(String memberId) {
 
@@ -45,7 +46,7 @@ public class MemberJpaAdapter implements
     }
 
     @Override
-    public void saveMember(RequestJoinDto member) {
+    public void saveMember(Member member) {
         memberRepository.save(memberMapper.mapToJpaEntity(member));
     }
 }

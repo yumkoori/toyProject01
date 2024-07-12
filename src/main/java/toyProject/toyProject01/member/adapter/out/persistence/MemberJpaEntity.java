@@ -32,13 +32,4 @@ public class MemberJpaEntity {
 
     }
 
-//    public MemberJpaEntity(Long number, String memberId, String pw, String nickName, Date age, String tel, String email) {
-//        this.number = number;
-//        this.memberId = memberId;
-//        this.pw = pw;
-//        this.nickName = nickName;
-//        this.age = age;
-//        this.tel = tel;
-//        this.email = email;
-//    }
 }
