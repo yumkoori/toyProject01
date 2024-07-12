@@ -10,6 +10,8 @@ import toyProject.toyProject01.member.adapter.in.web.RequestJoinDto;
 import toyProject.toyProject01.member.adapter.out.persistence.MemberJpaEntity;
 import toyProject.toyProject01.member.adapter.out.persistence.MemberMapper;
 import toyProject.toyProject01.member.adapter.out.persistence.SpringDataMemberRepository;
+import toyProject.toyProject01.member.application.port.in.command.JoinCommand;
+import toyProject.toyProject01.member.domain.Member;
 
 import java.sql.Date;
 
@@ -36,7 +38,7 @@ public class MemberServiceTest {
     @Test
     public void testJoin_Success() {
         // Given
-        RequestJoinDto requestJoinDto = new RequestJoinDto(
+        JoinCommand JoinCommand = new JoinCommand(
                 6L,
                 "yumi",
                 "1234",
@@ -47,7 +49,7 @@ public class MemberServiceTest {
         );
 
         // When
-        boolean result = memberService.Join(requestJoinDto);
+        boolean result = memberService.Join(JoinCommand);
 
         // Then
         assertTrue(result);  // 멤버가 존재하지 않으면 가입 성공
@@ -66,7 +68,7 @@ public class MemberServiceTest {
                 "email"
         );
 
-        RequestJoinDto requestJoinDto = new RequestJoinDto(
+        JoinCommand joinCommand = new JoinCommand(
                 6L,
                 "yumi",
                 "1234",
@@ -78,7 +80,7 @@ public class MemberServiceTest {
 
         memberJpaRepository.save(memberJpaEntity);
 
-        boolean result = memberService.Join(requestJoinDto);
+        boolean result = memberService.Join(joinCommand);
         assertFalse(result);
     }
 }

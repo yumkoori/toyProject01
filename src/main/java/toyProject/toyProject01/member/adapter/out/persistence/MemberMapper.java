@@ -20,7 +20,7 @@ public class MemberMapper {
         );
     }
 
-    MemberJpaEntity mapToJpaEntity(RequestJoinDto member) {
+    MemberJpaEntity mapToJpaEntity(Member member) {
         return new MemberJpaEntity(
                 member.getNumber(),
                 member.getMemberId(),

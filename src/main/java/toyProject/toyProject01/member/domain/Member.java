@@ -9,7 +9,7 @@ import java.util.Date;
 public class Member {
 
     //비즈니스 엔티티
-    private final Long memberNumber;
+    private final Long Number;
     private final String memberId;
     private final String pw;
     private final String nickname;
@@ -18,7 +18,7 @@ public class Member {
     private final String email;
 
     public Member(Long memberNumber, String memberId, String pw, String nickname, Date age, String tel, String email) {
-        this.memberNumber = memberNumber;
+        this.Number = memberNumber;
         this.memberId = memberId;
         this.pw = pw;
         this.nickname = nickname;
