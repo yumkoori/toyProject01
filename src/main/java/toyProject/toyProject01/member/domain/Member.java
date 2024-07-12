@@ -1,15 +1,18 @@
 package toyProject.toyProject01.member.domain;
 
+import lombok.Data;
 import lombok.Getter;
+import toyProject.toyProject01.member.application.port.in.command.JoinCommand;
 
 import java.security.MessageDigest;
 import java.util.Date;
+import java.util.Optional;
 
-@Getter
+@Data
 public class Member {
 
     //비즈니스 엔티티
-    private final Long Number;
+
     private final String memberId;
     private final String pw;
     private final String nickname;
@@ -17,8 +20,8 @@ public class Member {
     private final String tel;
     private final String email;
 
-    public Member(Long memberNumber, String memberId, String pw, String nickname, Date age, String tel, String email) {
-        this.Number = memberNumber;
+    public Member(String memberId, String pw, String nickname, Date age, String tel, String email) {
+
         this.memberId = memberId;
         this.pw = pw;
         this.nickname = nickname;
@@ -27,10 +30,15 @@ public class Member {
         this.email = email;
     }
 
-    //비즈니스 로직
-    //회원가입
-    //로그인
-
+    public static Member mapToMember(JoinCommand joinCommand) {
+        return new Member(joinCommand.getMemberId(),
+                joinCommand.getPw(),
+                joinCommand.getNickname(),
+                joinCommand.getAge(),
+                joinCommand.getTel(),
+                joinCommand.getEmail()
+        );
+    };
 
 
 }

@@ -23,24 +23,23 @@ public class MemberService implements MemberJoinUseCase {
 
     //밖에서 어떤 구현체들의 사항이 바뀌어도 이 service의 코드는 바뀌지 않아야함.
     @Override
-    public boolean Join(JoinCommand joinCommand) {  //Command로 받고
+    public boolean Join(JoinCommand joinCommand) {  //Command로 검증된 request 객체
 
+            //memberId로 회원 조회
+            Member findMember = loadMemberPort.loadMemberWithId(joinCommand.getMemberId());
 
-        //memberId로 회원 조회
-        Member findMember = loadMemberPort.loadMemberWithId(joinCommand.getMemberId());
+            if(findMember == null) {
+                log.info("해당되는 회원이 존재하지 않습니다. 회원가입이 가능합니다.");
 
-        if(findMember.getMemberId().equals(joinCommand.getMemberId())) {
+                Member member = Member.mapToMember(joinCommand);
+                saveMemberPort.saveMember(member);
+
+                return true;
+            }
+
             log.info("이미 존재하는 회원입니다. ");
             return false;
-        }
 
-        saveMemberPort.saveMember(findMember);      //domain으로 넘겨주기
-        return true;
     }
-
-
-
-
-
 
 }
