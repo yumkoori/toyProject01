@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class RequestJoinDto {
 
-    private Long number;
+    //검증 필요
     private String memberId;
     private String pw;
     private String nickname;
@@ -15,13 +15,5 @@ public class RequestJoinDto {
     private String tel;
     private String email;
 
-//    public RequestJoinDto(Long number, String memberId, String pw, String nickname, Date age, String tel, String email) {
-//        this.number = number;
-//        this.memberId = memberId;
-//        this.pw = pw;
-//        this.nickname = nickname;
-//        this.age = age;
-//        this.tel = tel;
-//        this.email = email;
-//    }
+
 }
