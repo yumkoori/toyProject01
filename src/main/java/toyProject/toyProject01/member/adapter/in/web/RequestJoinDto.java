@@ -7,6 +7,8 @@ import java.util.Date;
 @Data
 public class RequestJoinDto {
 
+    //ㅌㅔ스트 주석
+    
     private Long number;
     private String memberId;
     private String pw;
