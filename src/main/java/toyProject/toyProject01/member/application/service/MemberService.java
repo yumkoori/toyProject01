@@ -8,20 +8,24 @@ import org.springframework.transaction.annotation.Transactional;
 import toyProject.toyProject01.member.adapter.in.web.RequestJoinDto;
 import toyProject.toyProject01.member.application.port.in.MemberJoinUseCase;
 import toyProject.toyProject01.member.application.port.in.MemberLoginUseCase;
+import toyProject.toyProject01.member.application.port.in.MemberUpdateUseCase;
 import toyProject.toyProject01.member.application.port.in.command.JoinCommand;
 import toyProject.toyProject01.member.application.port.in.command.LoginCommand;
+import toyProject.toyProject01.member.application.port.in.command.UpdateCommand;
 import toyProject.toyProject01.member.application.port.out.LoadMemberPort;
 import toyProject.toyProject01.member.application.port.out.SaveMemberPort;
+import toyProject.toyProject01.member.application.port.out.UpdateMemberPort;
 import toyProject.toyProject01.member.domain.Member;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class MemberService implements MemberJoinUseCase, MemberLoginUseCase {
+public class MemberService implements MemberJoinUseCase, MemberLoginUseCase, MemberUpdateUseCase {
 
     private final LoadMemberPort loadMemberPort;
     private final SaveMemberPort saveMemberPort;
+    private final UpdateMemberPort updateMemberPort;
 
     //밖에서 어떤 구현체들의 사항이 바뀌어도 이 service의 코드는 바뀌지 않아야함.
     @Override
@@ -65,4 +69,25 @@ public class MemberService implements MemberJoinUseCase, MemberLoginUseCase {
             }
         }
     }
+
+    @Override
+    public boolean UpdateNickName(UpdateCommand updateCommand) {
+
+        updateMemberPort.updateNickName(updateCommand.getMemberId(), updateCommand.getNickname());
+
+        log.info("입력된 닉네임: = {}", updateCommand.getNickname());
+        Member findmember = loadMemberPort.loadMemberWithId(updateCommand.getMemberId());
+
+        log.info("변경된 닉네임 = {}" ,findmember.getNickname());
+
+        if(findmember.isSameNickName(updateCommand.getNickname())) {
+            log.info("변경이 완료 됐습니다.");
+            return true;
+        } else {
+            log.info("변경에 문제가 있습니다");
+            return false;
+        }
+
+    }
+
 }
