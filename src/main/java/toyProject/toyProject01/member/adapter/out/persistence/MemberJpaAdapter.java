@@ -52,4 +52,12 @@ public class MemberJpaAdapter implements
     public void saveMember(Member member) {
         memberRepository.save(memberMapper.mapToJpaEntity(member));
     }
+
+
+    @Override
+    public void updateNickName(String memberId, String nickName) {
+        memberRepository.updateNickName(nickName, memberId);
+    }
+
+
 }
