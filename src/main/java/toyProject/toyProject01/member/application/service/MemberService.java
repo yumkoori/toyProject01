@@ -48,22 +48,20 @@ public class MemberService implements MemberJoinUseCase, MemberLoginUseCase {
     @Override
     public boolean Login(LoginCommand loginCommand) {
 
-        Member findmember = loadMemberPort.loadMemberWithEmail(loginCommand.getEmail());
-        
-        if(findmember == null) {
-            log.info("존재하는 회원이 없습니다. 로그인을 할 수 없습니다.");
-            return false;
-        } else {
-            log.info("존재하는 아이디가 있습니다.");
-            boolean loginResult = findmember.isSamePw(loginCommand.getPw());
+        try {
+            Member findMember = loadMemberPort.loadMemberWithEmail(loginCommand.getEmail());
 
-            if (loginResult) {
-                log.info("pw도 일치합니다.");
-                return true;
-            } else {
-                log.info("id는 일치하지만, pw가 틀립니다.");
-                return false;
+            log.info("가입된 이메일이 있습니다.");
+
+            if(!findMember.isSamePw(loginCommand.getPw())) {
+                throw new MemberServiceException("가입된 이메일의 비밀번호가 틀립니다.");
             }
+
+        } catch (NoSuchElementException e) {
+            throw new MemberServiceException("가입된 이메일이 없습니다.");
         }
+
+        log.info("로그인이 가능합니다.");
+        return true;
     }
 }
