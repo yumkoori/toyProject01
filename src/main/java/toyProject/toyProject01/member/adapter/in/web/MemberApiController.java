@@ -23,12 +23,13 @@ public class MemberApiController {
 
         log.info("messageBody={}", request);
 
-        JoinCommand joinCommand = new JoinCommand(request.getMemberId(),
+        JoinCommand joinCommand = new JoinCommand(
+                request.getEmail(),
                 request.getPw(),
                 request.getNickname(),
                 request.getAge(),
-                request.getTel(),
-                request.getEmail());
+                request.getTel()
+        );
 
         boolean joinResult = memberJoinUseCase.Join(joinCommand);
 
