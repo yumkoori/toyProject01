@@ -14,6 +14,8 @@ import toyProject.toyProject01.member.application.port.out.LoadMemberPort;
 import toyProject.toyProject01.member.application.port.out.SaveMemberPort;
 import toyProject.toyProject01.member.domain.Member;
 
+import java.util.NoSuchElementException;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -27,22 +29,21 @@ public class MemberService implements MemberJoinUseCase, MemberLoginUseCase {
     @Override
     public boolean Join(JoinCommand joinCommand) {              //Command로 검증된 request 객체
 
-            //memberId로 회원 조회
+        try {
             Member findMember = loadMemberPort.loadMemberWithEmail(joinCommand.getEmail());
 
-            if(findMember == null) {
-                log.info("중복되는 회원이 없습니다. 회원가입이 가능합니다.");
-
-                Member member = Member.mapToMember(joinCommand);
-                saveMemberPort.saveMember(member);
-
-                return true;
+            if (findMember != null) {
+                throw new MemberServiceException("이미 가입된 이메일 입니다.");
             }
-
-            log.info("이미 존재하는 회원입니다. ");
             return false;
-    }
 
+        } catch (NoSuchElementException e) {
+            log.info("중복되는 회원이 없습니다. 회원가입이 가능합니다.", e);
+            Member member = Member.mapToMember(joinCommand);
+            saveMemberPort.saveMember(member);
+            return true;
+        }
+    }
 
     @Override
     public boolean Login(LoginCommand loginCommand) {
