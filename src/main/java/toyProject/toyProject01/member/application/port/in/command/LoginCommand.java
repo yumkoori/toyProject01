@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class LoginCommand {
-    private final String memberId;
+
+    private final String email;
     private final String pw;
 }

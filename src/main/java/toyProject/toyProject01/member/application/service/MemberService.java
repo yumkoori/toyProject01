@@ -28,7 +28,7 @@ public class MemberService implements MemberJoinUseCase, MemberLoginUseCase {
     public boolean Join(JoinCommand joinCommand) {              //Command로 검증된 request 객체
 
             //memberId로 회원 조회
-            Member findMember = loadMemberPort.loadMemberWithId(joinCommand.getMemberId());
+            Member findMember = loadMemberPort.loadMemberWithEmail(joinCommand.getEmail());
 
             if(findMember == null) {
                 log.info("중복되는 회원이 없습니다. 회원가입이 가능합니다.");
@@ -47,7 +47,7 @@ public class MemberService implements MemberJoinUseCase, MemberLoginUseCase {
     @Override
     public boolean Login(LoginCommand loginCommand) {
 
-        Member findmember = loadMemberPort.loadMemberWithId(loginCommand.getMemberId());
+        Member findmember = loadMemberPort.loadMemberWithEmail(loginCommand.getEmail());
         
         if(findmember == null) {
             log.info("존재하는 회원이 없습니다. 로그인을 할 수 없습니다.");
