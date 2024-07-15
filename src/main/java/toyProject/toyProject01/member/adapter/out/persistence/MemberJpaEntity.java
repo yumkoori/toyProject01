@@ -13,10 +13,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class MemberJpaEntity {
 
-    @Id @GeneratedValue
-    private Long number;
-
-    private String memberId;        //hash로
+    @Id
+    private String email;
 
     private String pw;
 
@@ -26,7 +24,6 @@ public class MemberJpaEntity {
 
     private String tel;
 
-    private String email;
 
     public MemberJpaEntity() {
 
