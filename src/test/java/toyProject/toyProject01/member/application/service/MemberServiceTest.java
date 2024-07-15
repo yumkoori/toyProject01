@@ -50,12 +50,11 @@ public class MemberServiceTest {
     public void testJoin_Success() {
         // Given
         JoinCommand JoinCommand = new JoinCommand(
-                "yumi",
+                "email",
                 "1234",
                 "test",
                 Date.valueOf("1990-01-01"),
-                "tel",
-                "email"
+                "tel"
         );
 
         // When
@@ -69,24 +68,21 @@ public class MemberServiceTest {
     @Test
     public void testJoin_False() {
         MemberJpaEntity memberJpaEntity = new MemberJpaEntity(
-                6L,
-                "yumi",
+                "email",
                 "1234",
                 "test",
                 Date.valueOf("1990-01-01"),
-                "tel",
-                "email"
+                "tel"
         );
 
         memberRepository.save(memberJpaEntity);
 
         JoinCommand joinCommand = new JoinCommand(
-                "yumi",
+                "email",
                 "1234",
                 "test",
                 Date.valueOf("1990-01-01"),
-                "tel",
-                "email"
+                "tel"
         );
 
         boolean result = memberService.Join(joinCommand);
@@ -97,16 +93,15 @@ public class MemberServiceTest {
     public void testLogin_Success() {
         //given
         JoinCommand joinMember = new JoinCommand(
-                "yumi",
+                "email",
                 "1234",
                 "test",
                 Date.valueOf("1990-01-01"),
-                "tel",
-                "email"
+                "tel"
         );
 
         memberJoinUseCase.Join(joinMember);
-        LoginCommand loginMember = new LoginCommand("yumi", "1234");
+        LoginCommand loginMember = new LoginCommand("email", "1234");
 
         //when
         boolean loginResult = memberLoginUseCase.Login(loginMember);
@@ -121,17 +116,16 @@ public class MemberServiceTest {
     public void testLogin_false_pw() {
         //given
         JoinCommand joinMember = new JoinCommand(
-                "yumi",
+                "email",
                 "1234",
                 "test",
                 Date.valueOf("1990-01-01"),
-                "tel",
-                "email"
+                "tel"
         );
         memberJoinUseCase.Join(joinMember);
 
         //when
-        LoginCommand loginMember = new LoginCommand("yumi", "78910");
+        LoginCommand loginMember = new LoginCommand("email", "78910");
         boolean loginResult = memberLoginUseCase.Login(loginMember);
 
         //then
@@ -144,7 +138,7 @@ public class MemberServiceTest {
         //given
 
         //when
-        LoginCommand loginMember = new LoginCommand("yumi", "78910");
+        LoginCommand loginMember = new LoginCommand("email", "78910");
         boolean loginResult = memberLoginUseCase.Login(loginMember);
 
         //then
