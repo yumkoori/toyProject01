@@ -15,21 +15,20 @@ public class Member {
 
     //비즈니스 엔티티
 
-    private final String memberId;
+
+    private final String email;
     private final String pw;
     private final String nickname;
     private final Date age;
     private final String tel;
-    private final String email;
 
-    public Member(String memberId, String pw, String nickname, Date age, String tel, String email) {
+    public Member(String email, String pw, String nickname, Date age, String tel) {
 
-        this.memberId = memberId;
+        this.email = email;
         this.pw = pw;
         this.nickname = nickname;
         this.age = age;
         this.tel = tel;
-        this.email = email;
     }
 
     public boolean isSamePw (String pw) {
@@ -37,17 +36,15 @@ public class Member {
         return pw.equals(this.pw);          //일치하면 true, 틀리면 false;
     }
 
-
-
-
     public static Member mapToMember(JoinCommand joinCommand) {
-        return new Member(joinCommand.getMemberId(),
+        return new Member(
+                joinCommand.getEmail(),
                 joinCommand.getPw(),
                 joinCommand.getNickname(),
                 joinCommand.getAge(),
-                joinCommand.getTel(),
-                joinCommand.getEmail()
+                joinCommand.getTel()
         );
+
     };
 
 
