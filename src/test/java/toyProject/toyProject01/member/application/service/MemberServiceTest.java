@@ -2,10 +2,13 @@ package toyProject.toyProject01.member.application.service;
 
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,6 +26,7 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class MemberServiceTest {
 
+    private static final Logger log = LoggerFactory.getLogger(MemberServiceTest.class);
     @Autowired
     private MemberService memberService;
 
@@ -37,7 +41,6 @@ public class MemberServiceTest {
 
     @Autowired
     MemberJoinUseCase memberJoinUseCase;
-
 
     @BeforeEach
     public void setUp() {
@@ -85,8 +88,10 @@ public class MemberServiceTest {
                 "tel"
         );
 
-        boolean result = memberService.Join(joinCommand);
-        assertFalse(result);
+        assertThrows(MemberServiceException.class, ()-> {
+            memberService.Join(joinCommand);
+        });
+
     }
 
     @Test
@@ -112,7 +117,7 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("id는 일치하지만, pw가 틀릴때")
+    @DisplayName("email은 일치하지만, pw가 틀릴때")
     public void testLogin_false_pw() {
         //given
         JoinCommand joinMember = new JoinCommand(
@@ -123,25 +128,28 @@ public class MemberServiceTest {
                 "tel"
         );
         memberJoinUseCase.Join(joinMember);
+        log.info("회원가입 완료");
 
         //when
         LoginCommand loginMember = new LoginCommand("email", "78910");
-        boolean loginResult = memberLoginUseCase.Login(loginMember);
 
         //then
-        Assertions.assertThat(loginResult).isFalse();
+        assertThrows(MemberServiceException.class, ()-> {
+            memberLoginUseCase.Login(loginMember);
+        });
     }
 
     @Test
-    @DisplayName("존재하지 않는 id를 입력했을때")
+    @DisplayName("존재하지 않는 email을 입력했을때")
     public void testLogin_false_id() {
         //given
+        LoginCommand loginMember = new LoginCommand("email", "78910");
 
         //when
-        LoginCommand loginMember = new LoginCommand("email", "78910");
-        boolean loginResult = memberLoginUseCase.Login(loginMember);
 
         //then
-        Assertions.assertThat(loginResult).isFalse();
+        assertThrows(MemberServiceException.class, ()-> {
+            memberLoginUseCase.Login(loginMember);
+        });
     }
 }
