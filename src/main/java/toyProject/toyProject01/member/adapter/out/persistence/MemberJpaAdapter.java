@@ -12,6 +12,8 @@ import toyProject.toyProject01.member.application.port.out.SaveMemberPort;
 import toyProject.toyProject01.member.application.port.out.UpdateMemberPort;
 import toyProject.toyProject01.member.domain.Member;
 
+import java.util.NoSuchElementException;
+
 @Component
 @RequiredArgsConstructor
 public class MemberJpaAdapter implements
@@ -20,21 +22,17 @@ public class MemberJpaAdapter implements
         UpdateMemberPort,
         DeleteMemberPort {
 
-    private static final Logger log = LoggerFactory.getLogger(MemberJpaAdapter.class);
     private final SpringDataMemberRepository memberRepository;
     private final MemberMapper memberMapper;
 
     @Override
     public Member loadMemberWithEmail(String email) {
 
-        try {
-            MemberJpaEntity findMember = memberRepository.findByMemberEmail(email);        //null일수도 있음.
-            return memberMapper.mapToDomainMember(findMember);
-        } catch (Exception e) {
-            log.info("해당 회원을 찾을 수 없습니다. " );
-            log.info("error", e);
-            return null;            //예외로 바꿔야함.
-        }
+        //조회되는 값이 없으면 Optional.empty()가 반환되고, 예외 반환
+        MemberJpaEntity memberJpaEntity = memberRepository.findByMemberEmail(email)
+               .orElseThrow(() -> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
+
+        return memberMapper.mapToDomainMember(memberJpaEntity);
     }
 
     @Override
