@@ -29,19 +29,15 @@ public class MemberService implements MemberJoinUseCase, MemberLoginUseCase {
     @Override
     public boolean Join(JoinCommand joinCommand) {              //Command로 검증된 request 객체
 
-        try {
-            Member findMember = loadMemberPort.loadMemberWithEmail(joinCommand.getEmail());
+        if (possibleJoinWithEmail(joinCommand.getEmail())) {
 
-            if (findMember != null) {
-                throw new MemberServiceException("이미 가입된 이메일 입니다.");
-            }
-            return false;
-
-        } catch (NoSuchElementException e) {
-            log.info("중복되는 회원이 없습니다. 회원가입이 가능합니다.", e);
             Member member = Member.mapToMember(joinCommand);
             saveMemberPort.saveMember(member);
+
             return true;
+
+        } else {
+            throw new MemberServiceException("이미 가입된 회원입니다.");
         }
     }
 
@@ -64,4 +60,21 @@ public class MemberService implements MemberJoinUseCase, MemberLoginUseCase {
         log.info("로그인이 가능합니다.");
         return true;
     }
+
+    private boolean possibleJoinWithEmail(String email) {
+        try {
+            Member findMember = loadMemberPort.loadMemberWithEmail(email);
+
+            if(findMember != null) {
+                log.info("존재하는 이메일 입니다.");
+            }
+
+        } catch (NoSuchElementException e) {
+            log.info("중복되는 회원이 없습니다 회원가입이 가능합니다.", e);
+            return true;
+        }
+
+        return false;
+    }
+
 }
