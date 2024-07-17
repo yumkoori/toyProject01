@@ -17,7 +17,7 @@ import toyProject.toyProject01.member.common.ToyProjectErrorCode;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class MemberApiController {
+public class JoinApiController {
 
     private final MemberJoinUseCase memberJoinUseCase;
 
@@ -47,11 +47,14 @@ public class MemberApiController {
     @ExceptionHandler(MemberServiceException.class)
     public ResponseEntity<ResultDto<String>> memberExHandle(MemberServiceException e) {
         log.error(e.getMessage());
-        
-        ResultDto<String> result = new ResultDto<>(
-                ToyProjectErrorCode.EMAIL_DUPLICATION.getStatus(),
+
+        ResultDto<String> result = null;
+
+        if (e.getErrorCode().equals(ToyProjectErrorCode.EMAIL_DUPLICATION))
+            result = new ResultDto<>(
+                ToyProjectErrorCode.EMAIL_DUPLICATION.getCode(),
                 ToyProjectErrorCode.EMAIL_DUPLICATION.getMessage(),
-                ToyProjectErrorCode.EMAIL_DUPLICATION.getCode()
+                null
         );
 
         return new ResponseEntity<>(result, HttpStatus.OK);
