@@ -12,6 +12,7 @@ import toyProject.toyProject01.member.application.port.in.command.JoinCommand;
 import toyProject.toyProject01.member.application.port.in.command.LoginCommand;
 import toyProject.toyProject01.member.application.port.out.LoadMemberPort;
 import toyProject.toyProject01.member.application.port.out.SaveMemberPort;
+import toyProject.toyProject01.member.common.ToyProjectErrorCode;
 import toyProject.toyProject01.member.domain.Member;
 
 import java.util.NoSuchElementException;
@@ -37,12 +38,15 @@ public class MemberService implements MemberJoinUseCase, MemberLoginUseCase {
             return true;
 
         } else {
-            throw new MemberServiceException("이미 가입된 회원입니다.");
+            throw new MemberServiceException(
+                    ToyProjectErrorCode.EMAIL_DUPLICATION,
+                    "이미 가입된 회원입니다."
+            );
         }
     }
 
     @Override
-    public boolean Login(LoginCommand loginCommand) {
+    public Member Login(LoginCommand loginCommand) {
 
         try {
             Member findMember = loadMemberPort.loadMemberWithEmail(loginCommand.getEmail());
@@ -50,15 +54,21 @@ public class MemberService implements MemberJoinUseCase, MemberLoginUseCase {
             log.info("가입된 이메일이 있습니다.");
 
             if(!findMember.isSamePw(loginCommand.getPw())) {
-                throw new MemberServiceException("가입된 이메일의 비밀번호가 틀립니다.");
+                throw new MemberServiceException(
+                        ToyProjectErrorCode.LOGIN_PW_WRONG, "가입된 이메일의 비밀번호가 틀립니다."
+                );
             }
 
+            //이메일, pw 모두 일치하면 회원 정보 반환
+            return findMember;
+
         } catch (NoSuchElementException e) {
-            throw new MemberServiceException("가입된 이메일이 없습니다.");
+            throw new MemberServiceException(ToyProjectErrorCode.EMAIL_NOT_EXISTENCE,
+                    "가입된 이메일이 없습니다.",
+                    e
+            );
         }
 
-        log.info("로그인이 가능합니다.");
-        return true;
     }
 
     private boolean possibleJoinWithEmail(String email) {
