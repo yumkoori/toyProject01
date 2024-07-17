@@ -4,12 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import toyProject.toyProject01.member.application.port.in.MemberJoinUseCase;
 import toyProject.toyProject01.member.application.port.in.command.JoinCommand;
+import toyProject.toyProject01.member.application.service.MemberServiceException;
 import toyProject.toyProject01.member.common.ResultDto;
+import toyProject.toyProject01.member.common.ToyProjectErrorCode;
 
 @Slf4j
 @RestController
@@ -31,22 +34,26 @@ public class MemberApiController {
                 request.getTel()
         );
 
-        boolean joinResult = memberJoinUseCase.Join(joinCommand);
+        memberJoinUseCase.Join(joinCommand);
 
-        if(joinResult) {
-            ResponseMemberDto responseDto = ResponseMemberDto.mapToResponseDto(joinCommand.getNickname());
+        ResponseMemberDto responseDto = ResponseMemberDto.mapToResponseDto(joinCommand.getNickname());
 
-            ResultDto<ResponseMemberDto> result =
-                    new ResultDto<>(200, "회원가입 완료", responseDto);
+        ResultDto<ResponseMemberDto> result =
+                new ResultDto<>(200, "회원가입 완료", responseDto);
 
-            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
+    }
 
-        } else {
-            ResultDto<ResponseMemberDto> result =
-                    new ResultDto<>(400, "회원가입 실패",  new ResponseMemberDto("BadRequest"));
+    @ExceptionHandler(MemberServiceException.class)
+    public ResponseEntity<ResultDto<String>> memberExHandle(MemberServiceException e) {
+        log.error(e.getMessage());
+        
+        ResultDto<String> result = new ResultDto<>(
+                ToyProjectErrorCode.EMAIL_DUPLICATION.getStatus(),
+                ToyProjectErrorCode.EMAIL_DUPLICATION.getMessage(),
+                ToyProjectErrorCode.EMAIL_DUPLICATION.getCode()
+        );
 
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-        }
-
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
