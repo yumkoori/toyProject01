@@ -19,6 +19,8 @@ import toyProject.toyProject01.member.application.port.in.MemberLoginUseCase;
 import toyProject.toyProject01.member.application.port.in.command.JoinCommand;
 import toyProject.toyProject01.member.application.port.in.command.LoginCommand;
 import toyProject.toyProject01.member.application.port.out.LoadMemberPort;
+import toyProject.toyProject01.member.domain.Member;
+
 import java.sql.Date;
 import static org.junit.Assert.*;
 
@@ -109,10 +111,10 @@ public class MemberServiceTest {
         LoginCommand loginMember = new LoginCommand("email", "1234");
 
         //when
-        boolean loginResult = memberLoginUseCase.Login(loginMember);
+        Member loginResult = memberLoginUseCase.Login(loginMember);
 
         //then
-        Assertions.assertThat(loginResult).isTrue();
+        Assertions.assertThat(loginResult).isNotNull();
 
     }
 
