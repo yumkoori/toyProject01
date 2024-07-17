@@ -11,6 +11,7 @@ import toyProject.toyProject01.member.application.port.out.LoadMemberPort;
 import toyProject.toyProject01.member.application.port.out.SaveMemberPort;
 import toyProject.toyProject01.member.application.port.out.UpdateMemberPort;
 import toyProject.toyProject01.member.domain.Member;
+import java.util.NoSuchElementException;
 
 @Component
 @RequiredArgsConstructor
@@ -20,32 +21,16 @@ public class MemberJpaAdapter implements
         UpdateMemberPort,
         DeleteMemberPort {
 
-    private static final Logger log = LoggerFactory.getLogger(MemberJpaAdapter.class);
     private final SpringDataMemberRepository memberRepository;
     private final MemberMapper memberMapper;
 
-    //number로 가져오기
-    @Override
-    public Member loadMemberWithNumber(Long memberNumber) {
+    public Member loadMemberWithEmail(String email) {
 
-        MemberJpaEntity findMember = memberRepository.findById(memberNumber)
-                .orElseThrow(EntityExistsException::new);
+        //조회되는 값이 없으면 Optional.empty()가 반환되고, 예외 반환
+        MemberJpaEntity memberJpaEntity = memberRepository.findByMemberEmail(email)
+               .orElseThrow(() -> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
 
-        return memberMapper.mapToDomainMember(findMember);
-    }
-
-
-    @Override
-    public Member loadMemberWithId(String memberId) {
-
-        try {
-            MemberJpaEntity findMember = memberRepository.findByMemberId(memberId);        //null일수도 있음.
-            return memberMapper.mapToDomainMember(findMember);
-        } catch (Exception e) {
-            log.info("해당 회원을 찾을 수 없습니다. " );
-            log.info("error", e);
-            return null;            //예외로 바꿔야함.
-        }
+        return memberMapper.mapToDomainMember(memberJpaEntity);
     }
 
     @Override
@@ -55,8 +40,8 @@ public class MemberJpaAdapter implements
 
 
     @Override
-    public void updateNickName(String memberId, String nickName) {
-        memberRepository.updateNickName(nickName, memberId);
+    public void updateNickName(String email, String nickName) {
+        memberRepository.updateNickName(nickName, email);
     }
 
 

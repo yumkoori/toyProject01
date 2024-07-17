@@ -10,24 +10,23 @@ public class MemberMapper {
 
     Member mapToDomainMember(MemberJpaEntity memberJpaEntity) {
         return new Member(
-                memberJpaEntity.getMemberId(),
+
+                memberJpaEntity.getEmail(),
                 memberJpaEntity.getPw(),
                 memberJpaEntity.getNickName(),
                 memberJpaEntity.getAge(),
-                memberJpaEntity.getTel(),
-                memberJpaEntity.getEmail()
+                memberJpaEntity.getTel()
         );
     }
 
     MemberJpaEntity mapToJpaEntity(Member member) {
         return new MemberJpaEntity(
-                5L,
-                member.getMemberId(),
+
+                member.getEmail()
                 member.getPw(),
                 member.getNickname(),
                 member.getAge(),
-                member.getTel(),
-                member.getEmail()
+                member.getTel()
         );
     }
 }

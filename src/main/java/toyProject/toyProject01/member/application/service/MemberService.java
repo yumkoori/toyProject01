@@ -9,19 +9,24 @@ import toyProject.toyProject01.member.adapter.in.web.RequestJoinDto;
 import toyProject.toyProject01.member.application.port.in.MemberJoinUseCase;
 import toyProject.toyProject01.member.application.port.in.MemberLoginUseCase;
 import toyProject.toyProject01.member.application.port.in.MemberUpdateUseCase;
+import toyProject.toyProject01.member.application.port.in.command.UpdateCommand;
+import toyProject.toyProject01.member.application.port.out.UpdateMemberPort;
 import toyProject.toyProject01.member.application.port.in.command.JoinCommand;
 import toyProject.toyProject01.member.application.port.in.command.LoginCommand;
-import toyProject.toyProject01.member.application.port.in.command.UpdateCommand;
 import toyProject.toyProject01.member.application.port.out.LoadMemberPort;
 import toyProject.toyProject01.member.application.port.out.SaveMemberPort;
-import toyProject.toyProject01.member.application.port.out.UpdateMemberPort;
+import toyProject.toyProject01.member.common.ToyProjectErrorCode;
 import toyProject.toyProject01.member.domain.Member;
+
+import java.util.NoSuchElementException;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
+
 public class MemberService implements MemberJoinUseCase, MemberLoginUseCase, MemberUpdateUseCase {
+
 
     private final LoadMemberPort loadMemberPort;
     private final SaveMemberPort saveMemberPort;
@@ -31,45 +36,46 @@ public class MemberService implements MemberJoinUseCase, MemberLoginUseCase, Mem
     @Override
     public boolean Join(JoinCommand joinCommand) {              //Command로 검증된 request 객체
 
-            //memberId로 회원 조회
-            Member findMember = loadMemberPort.loadMemberWithId(joinCommand.getMemberId());
+        if (possibleJoinWithEmail(joinCommand.getEmail())) {
 
-            if(findMember == null) {
-                log.info("중복되는 회원이 없습니다. 회원가입이 가능합니다.");
+            Member member = Member.mapToMember(joinCommand);
+            saveMemberPort.saveMember(member);
 
-                Member member = Member.mapToMember(joinCommand);
-                saveMemberPort.saveMember(member);
+            return true;
 
-                return true;
-            }
-
-            log.info("이미 존재하는 회원입니다. ");
-            return false;
-    }
-
-
-    @Override
-    public boolean Login(LoginCommand loginCommand) {
-
-        Member findmember = loadMemberPort.loadMemberWithId(loginCommand.getMemberId());
-        
-        if(findmember == null) {
-            log.info("존재하는 회원이 없습니다. 로그인을 할 수 없습니다.");
-            return false;
         } else {
-            log.info("존재하는 아이디가 있습니다.");
-            boolean loginResult = findmember.isSamePw(loginCommand.getPw());
-
-            if (loginResult) {
-                log.info("pw도 일치합니다.");
-                return true;
-            } else {
-                log.info("id는 일치하지만, pw가 틀립니다.");
-                return false;
-            }
+            throw new MemberServiceException(
+                    ToyProjectErrorCode.EMAIL_DUPLICATION,
+                    "이미 가입된 회원입니다."
+            );
         }
     }
 
+    @Override
+    public Member Login(LoginCommand loginCommand) {
+
+        try {
+            Member findMember = loadMemberPort.loadMemberWithEmail(loginCommand.getEmail());
+
+            log.info("가입된 이메일이 있습니다.");
+
+            if(!findMember.isSamePw(loginCommand.getPw())) {
+                throw new MemberServiceException(
+                        ToyProjectErrorCode.LOGIN_PW_WRONG, "가입된 이메일의 비밀번호가 틀립니다."
+                );
+            }
+
+            //이메일, pw 모두 일치하면 회원 정보 반환
+            return findMember;
+
+        } catch (NoSuchElementException e) {
+            throw new MemberServiceException(ToyProjectErrorCode.EMAIL_NOT_EXISTENCE,
+                    "가입된 이메일이 없습니다.",
+                    e
+            );
+        }
+    }
+      
     @Override
     public boolean UpdateNickName(UpdateCommand updateCommand) {
 
@@ -86,8 +92,22 @@ public class MemberService implements MemberJoinUseCase, MemberLoginUseCase, Mem
         } else {
             log.info("변경에 문제가 있습니다");
             return false;
+        }      
+
+    private boolean possibleJoinWithEmail(String email) {
+        try {
+            Member findMember = loadMemberPort.loadMemberWithEmail(email);
+
+            if(findMember != null) {
+                log.info("존재하는 이메일 입니다.");
+            }
+
+        } catch (NoSuchElementException e) {
+            log.info("중복되는 회원이 없습니다 회원가입이 가능합니다.", e);
+            return true;
         }
 
+        return false;
     }
 
 }

@@ -1,9 +1,10 @@
 package toyProject.toyProject01.member.application.port.in;
 
 import toyProject.toyProject01.member.application.port.in.command.LoginCommand;
+import toyProject.toyProject01.member.domain.Member;
 
 public interface MemberLoginUseCase {
 
-    boolean Login(LoginCommand loginCommand);
+    Member Login(LoginCommand loginCommand);
 
 }
