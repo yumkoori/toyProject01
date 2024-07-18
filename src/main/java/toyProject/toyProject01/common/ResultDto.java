@@ -1,4 +1,4 @@
-package toyProject.toyProject01.member.common;
+package toyProject.toyProject01.common;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

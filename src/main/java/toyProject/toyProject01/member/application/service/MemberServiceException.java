@@ -1,6 +1,6 @@
 package toyProject.toyProject01.member.application.service;
 import lombok.Getter;
-import toyProject.toyProject01.member.common.ToyProjectErrorCode;
+import toyProject.toyProject01.common.ToyProjectErrorCode;
 
 @Getter
 public class MemberServiceException extends RuntimeException {
