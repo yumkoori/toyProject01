@@ -15,6 +15,6 @@ public interface SpringDataMemberRepository extends JpaRepository <MemberJpaEnti
     Optional<MemberJpaEntity> findByMemberEmail(@Param("email") String email);
 
     @Modifying
-    @Query("update MemberJpaEntity m SET m.nickName = :nickName WHERE m.memberId = :memberId")
-    void updateNickName(@Param("nickName") String nickName, @Param("memberId") String memberId);
+    @Query("update MemberJpaEntity m SET m.nickName = :nickName WHERE m.email = :email")
+    void updateNickName(@Param("nickName") String nickName, @Param("email") String email);
 }

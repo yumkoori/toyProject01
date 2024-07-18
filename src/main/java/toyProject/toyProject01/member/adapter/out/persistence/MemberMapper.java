@@ -21,8 +21,7 @@ public class MemberMapper {
 
     MemberJpaEntity mapToJpaEntity(Member member) {
         return new MemberJpaEntity(
-
-                member.getEmail()
+                member.getEmail(),
                 member.getPw(),
                 member.getNickname(),
                 member.getAge(),
