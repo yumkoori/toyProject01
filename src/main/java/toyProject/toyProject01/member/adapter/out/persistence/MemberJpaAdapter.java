@@ -11,7 +11,6 @@ import toyProject.toyProject01.member.application.port.out.LoadMemberPort;
 import toyProject.toyProject01.member.application.port.out.SaveMemberPort;
 import toyProject.toyProject01.member.application.port.out.UpdateMemberPort;
 import toyProject.toyProject01.member.domain.Member;
-
 import java.util.NoSuchElementException;
 
 @Component
@@ -25,7 +24,6 @@ public class MemberJpaAdapter implements
     private final SpringDataMemberRepository memberRepository;
     private final MemberMapper memberMapper;
 
-    @Override
     public Member loadMemberWithEmail(String email) {
 
         //조회되는 값이 없으면 Optional.empty()가 반환되고, 예외 반환
@@ -39,4 +37,12 @@ public class MemberJpaAdapter implements
     public void saveMember(Member member) {
         memberRepository.save(memberMapper.mapToJpaEntity(member));
     }
+
+
+    @Override
+    public void updateNickName(String email, String nickName) {
+        memberRepository.updateNickName(nickName, email);
+    }
+
+
 }

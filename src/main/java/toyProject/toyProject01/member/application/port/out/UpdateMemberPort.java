@@ -1,6 +1,8 @@
 package toyProject.toyProject01.member.application.port.out;
 
+import toyProject.toyProject01.member.domain.Member;
+
 public interface UpdateMemberPort {
 
-    //회원 정보 수정하고 싶을때 접근하는 포트
+    void updateNickName(String memberId, String nickName);
 }

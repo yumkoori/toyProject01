@@ -8,6 +8,7 @@ import java.util.Date;
 public class RequestJoinDto {
 
     //검증 필요
+
     private String email;
     private String pw;
     private String nickname;

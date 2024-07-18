@@ -10,6 +10,7 @@ public class MemberMapper {
 
     Member mapToDomainMember(MemberJpaEntity memberJpaEntity) {
         return new Member(
+
                 memberJpaEntity.getEmail(),
                 memberJpaEntity.getPw(),
                 memberJpaEntity.getNickName(),
@@ -20,7 +21,8 @@ public class MemberMapper {
 
     MemberJpaEntity mapToJpaEntity(Member member) {
         return new MemberJpaEntity(
-                member.getEmail(),
+
+                member.getEmail()
                 member.getPw(),
                 member.getNickname(),
                 member.getAge(),
