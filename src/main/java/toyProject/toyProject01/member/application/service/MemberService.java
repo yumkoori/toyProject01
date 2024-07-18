@@ -1,11 +1,9 @@
 package toyProject.toyProject01.member.application.service;
 
-import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toyProject.toyProject01.member.adapter.in.web.RequestJoinDto;
 import toyProject.toyProject01.member.application.port.in.MemberJoinUseCase;
 import toyProject.toyProject01.member.application.port.in.MemberLoginUseCase;
 import toyProject.toyProject01.member.application.port.in.MemberUpdateUseCase;
@@ -15,7 +13,7 @@ import toyProject.toyProject01.member.application.port.in.command.JoinCommand;
 import toyProject.toyProject01.member.application.port.in.command.LoginCommand;
 import toyProject.toyProject01.member.application.port.out.LoadMemberPort;
 import toyProject.toyProject01.member.application.port.out.SaveMemberPort;
-import toyProject.toyProject01.member.common.ToyProjectErrorCode;
+import toyProject.toyProject01.common.ToyProjectErrorCode;
 import toyProject.toyProject01.member.domain.Member;
 
 import java.util.NoSuchElementException;

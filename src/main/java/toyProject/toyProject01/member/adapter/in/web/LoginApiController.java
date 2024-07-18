@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import toyProject.toyProject01.member.application.port.in.MemberLoginUseCase;
 import toyProject.toyProject01.member.application.port.in.command.LoginCommand;
 import toyProject.toyProject01.member.application.service.MemberServiceException;
-import toyProject.toyProject01.member.common.ResultDto;
-import toyProject.toyProject01.member.common.ToyProjectErrorCode;
+import toyProject.toyProject01.common.ResultDto;
+import toyProject.toyProject01.common.ToyProjectErrorCode;
 import toyProject.toyProject01.member.domain.Member;
 
 @Slf4j
