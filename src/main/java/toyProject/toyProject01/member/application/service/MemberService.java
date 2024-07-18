@@ -27,7 +27,6 @@ import java.util.NoSuchElementException;
 
 public class MemberService implements MemberJoinUseCase, MemberLoginUseCase, MemberUpdateUseCase {
 
-
     private final LoadMemberPort loadMemberPort;
     private final SaveMemberPort saveMemberPort;
     private final UpdateMemberPort updateMemberPort;
@@ -79,20 +78,21 @@ public class MemberService implements MemberJoinUseCase, MemberLoginUseCase, Mem
     @Override
     public boolean UpdateNickName(UpdateCommand updateCommand) {
 
-        updateMemberPort.updateNickName(updateCommand.getMemberId(), updateCommand.getNickname());
+        updateMemberPort.updateNickName(updateCommand.getEmail(), updateCommand.getNickname());
 
         log.info("입력된 닉네임: = {}", updateCommand.getNickname());
-        Member findmember = loadMemberPort.loadMemberWithId(updateCommand.getMemberId());
+        Member findmember = loadMemberPort.loadMemberWithEmail(updateCommand.getEmail());
 
-        log.info("변경된 닉네임 = {}" ,findmember.getNickname());
+        log.info("변경된 닉네임 = {}", findmember.getNickname());
 
-        if(findmember.isSameNickName(updateCommand.getNickname())) {
+        if (findmember.isSameNickName(updateCommand.getNickname())) {
             log.info("변경이 완료 됐습니다.");
             return true;
         } else {
             log.info("변경에 문제가 있습니다");
             return false;
-        }      
+        }
+    }
 
     private boolean possibleJoinWithEmail(String email) {
         try {

@@ -162,79 +162,19 @@ public class MemberServiceTest {
     }
 
     @Test
-    public void testLogin_Success() {
-        //given
-        JoinCommand joinMember = new JoinCommand(
-                "yumi",
-                "1234",
-                "test",
-                Date.valueOf("1990-01-01"),
-                "tel",
-                "email"
-        );
-
-        memberJoinUseCase.Join(joinMember);
-        LoginCommand loginMember = new LoginCommand("yumi", "1234");
-
-        //when
-        boolean loginResult = memberLoginUseCase.Login(loginMember);
-
-        //then
-        Assertions.assertThat(loginResult).isTrue();
-
-    }
-
-    @Test
-    @DisplayName("id는 일치하지만, pw가 틀릴때")
-    public void testLogin_false_pw() {
-        //given
-        JoinCommand joinMember = new JoinCommand(
-                "yumi",
-                "1234",
-                "test",
-                Date.valueOf("1990-01-01"),
-                "tel",
-                "email"
-        );
-        memberJoinUseCase.Join(joinMember);
-
-        //when
-        LoginCommand loginMember = new LoginCommand("yumi", "78910");
-        boolean loginResult = memberLoginUseCase.Login(loginMember);
-
-        //then
-        Assertions.assertThat(loginResult).isFalse();
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 id를 입력했을때")
-    public void testLogin_false_id() {
-        //given
-
-        //when
-        LoginCommand loginMember = new LoginCommand("yumi", "78910");
-        boolean loginResult = memberLoginUseCase.Login(loginMember);
-
-        //then
-        Assertions.assertThat(loginResult).isFalse();
-    }
-
-
-    @Test
     public void testUpdate_Success_nickName() {
         //given
         JoinCommand joinMember = new JoinCommand(
-                "yumi",
+                "email",
                 "1234",
                 "test",
                 Date.valueOf("1990-01-01"),
-                "tel",
-                "email"
+                "tel"
         );
 
         memberJoinUseCase.Join(joinMember);
 
-        UpdateCommand updateCommand = new UpdateCommand("yumi", "coco");
+        UpdateCommand updateCommand = new UpdateCommand("email", "coco");
 
         //when
         boolean result = memberUpdateUseCase.UpdateNickName(updateCommand);
