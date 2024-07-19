@@ -3,8 +3,10 @@ package toyProject.toyProject01.board.application.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import toyProject.toyProject01.board.application.port.in.LoadPostUseCase;
 import toyProject.toyProject01.board.application.port.in.ResisterPostUseCase;
 import toyProject.toyProject01.board.application.port.in.command.ResisterPostCommand;
+import toyProject.toyProject01.board.application.port.out.LoadPostPort;
 import toyProject.toyProject01.board.application.port.out.SavePostPort;
 import toyProject.toyProject01.board.domain.Category;
 import toyProject.toyProject01.board.domain.Post;
@@ -12,14 +14,17 @@ import toyProject.toyProject01.common.UseCase;
 import toyProject.toyProject01.member.application.port.out.LoadMemberPort;
 import toyProject.toyProject01.member.domain.Member;
 
+import java.util.List;
+
 @UseCase
 @Service
 @Transactional
 @AllArgsConstructor
-public class ResisterPostService implements ResisterPostUseCase {
+public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase {
 
-    private final SavePostPort savePostPort;
     private final LoadMemberPort loadMemberPort;
+    private final SavePostPort savePostPort;
+    private final LoadPostPort loadPostPort;
 
     @Override
     public Post registerPost(ResisterPostCommand resisterPostCommand) {
@@ -41,5 +46,10 @@ public class ResisterPostService implements ResisterPostUseCase {
 
         savePostPort.savePost(postDomain);
         return postDomain;
+    }
+
+    @Override
+    public List<Post> findPostAll() {
+        return loadPostPort.findAll();
     }
 }
