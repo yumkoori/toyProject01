@@ -1,0 +1,20 @@
+package toyProject.toyProject01.board.adapter.in.web.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import toyProject.toyProject01.board.domain.Post;
+
+import java.util.Date;
+
+@Getter
+@AllArgsConstructor
+public class ResponsePostDto {
+
+    private final String email;
+    private final String category;
+    private final String title;
+    private final String content;
+    private final Date date;
+
+}
