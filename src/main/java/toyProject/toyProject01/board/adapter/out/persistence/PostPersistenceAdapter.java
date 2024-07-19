@@ -2,13 +2,17 @@ package toyProject.toyProject01.board.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import toyProject.toyProject01.board.adapter.out.persistence.entity.PostJpaEntity;
+import toyProject.toyProject01.board.application.port.out.LoadPostPort;
 import toyProject.toyProject01.board.application.port.out.SavePostPort;
 import toyProject.toyProject01.board.domain.Post;
 import toyProject.toyProject01.common.PersistenceAdapter;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class PostPersistenceAdapter implements SavePostPort {
+public class PostPersistenceAdapter implements SavePostPort, LoadPostPort {
 
     private final SpringDataPostRepository repository;
     private final PersistenceMapper persistenceMapper;
@@ -22,4 +26,13 @@ public class PostPersistenceAdapter implements SavePostPort {
 
     }
 
+    //모든 게시판 데이터 조회후 반환
+    @Override
+    public List<Post> findPostAll() {
+        List<PostJpaEntity> findAllPosts = repository.findAll();
+
+        return findAllPosts.stream()
+                .map(persistenceMapper::mapToPostDomain)
+                .collect(Collectors.toList());
+    }
 }

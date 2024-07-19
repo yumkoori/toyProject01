@@ -14,6 +14,7 @@ import toyProject.toyProject01.member.adapter.out.persistence.MemberMapper;
 @Getter
 public class PersistenceMapper {
 
+    //Domain -> JpaEntity
     PostJpaEntity mapToPostJpaEntity(Post post) {
 
         return new PostJpaEntity(
@@ -25,10 +26,31 @@ public class PersistenceMapper {
                 post.getPostDate());
     }
 
+    //Domain -> JpaEntity
     CategoryJpaEntity mapToCategoryJpaEntity(Category category) {
         return new CategoryJpaEntity(
                 category.getCategoryId(),
                 category.getType()
+        );
+    }
+
+    //JpaEntity -> Domain
+    Post mapToPostDomain(PostJpaEntity postJpaEntity) {
+        return new Post(
+                postJpaEntity.getPostId(),
+                MemberMapper.mapToDomainMember(postJpaEntity.getMember()),
+                mapToCategoryDomain(postJpaEntity.getCategory()),
+                postJpaEntity.getTitle(),
+                postJpaEntity.getPostContent(),
+                postJpaEntity.getPostDate()
+        );
+    }
+
+    //JpaEntity -> Domain
+    Category mapToCategoryDomain(CategoryJpaEntity categoryJpaEntity) {
+        return new Category(
+                categoryJpaEntity.getCategoryId(),
+                categoryJpaEntity.getType()
         );
     }
 
