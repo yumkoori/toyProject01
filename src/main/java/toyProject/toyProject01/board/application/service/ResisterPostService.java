@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import toyProject.toyProject01.board.application.port.in.LoadPostUseCase;
 import toyProject.toyProject01.board.application.port.in.ResisterPostUseCase;
 import toyProject.toyProject01.board.application.port.in.command.ResisterPostCommand;
+import toyProject.toyProject01.board.application.port.in.command.UpdatePostCommand;
 import toyProject.toyProject01.board.application.port.out.LoadPostPort;
 import toyProject.toyProject01.board.application.port.out.SavePostPort;
 import toyProject.toyProject01.board.domain.Category;
@@ -50,6 +51,12 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
 
     @Override
     public List<Post> findPostAll() {
-        return loadPostPort.findAll();
+        return loadPostPort.findPostAll();
+    }
+
+    @Override
+    public Post findPostOne(Long postId) {
+
+        return loadPostPort.findPostId(postId);
     }
 }
