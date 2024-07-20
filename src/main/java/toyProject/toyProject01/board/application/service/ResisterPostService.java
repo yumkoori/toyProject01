@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import toyProject.toyProject01.board.application.port.in.DeletePostUseCase;
 import toyProject.toyProject01.board.application.port.in.LoadPostUseCase;
 import toyProject.toyProject01.board.application.port.in.ResisterPostUseCase;
 import toyProject.toyProject01.board.application.port.in.UpdatePostUseCase;
@@ -27,12 +28,13 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 @Slf4j
-public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase, UpdatePostUseCase {
+public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase, UpdatePostUseCase , DeletePostUseCase {
 
     private final LoadMemberPort loadMemberPort;
     private final SavePostPort savePostPort;
     private final LoadPostPort loadPostPort;
     private final UpdatePostPort updatePostPort;
+    private final DeletePostUseCase deletePostUseCase;
 
     @Override
     public Post registerPost(ResisterPostCommand resisterPostCommand) {
@@ -86,5 +88,10 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
 
         return updatePostPort.updatePost(postId, updateDomain);
 
+    }
+
+    @Override
+    public void deletePost(Long postId) {
+        deletePostUseCase.deletePost(postId);
     }
 }
