@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import toyProject.toyProject01.board.adapter.in.web.dto.ResisterPostDto;
 import toyProject.toyProject01.board.adapter.in.web.dto.ResponsePostDto;
 import toyProject.toyProject01.board.application.port.in.LoadPostUseCase;
@@ -63,6 +60,19 @@ public class PostApiController {
         ResultDto<List<ResponsePostDto>> result = new ResultDto<>(200, "게시물 조회 완료", responseDto);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/posts/{postId}")
+    public ResponseEntity<ResultDto<ResponsePostDto>> findPostOne(@PathVariable Long postId) {
+
+        //게시글 하나 조회
+        Post findPost = loadPostUseCase.findPostOne(postId);
+        //도메인을 응답Dto 객체로 변환
+        ResponsePostDto responseDto = ResponseMapper.mapToPostDomain(findPost);
+        //응답 결과 객체 생성
+        ResultDto<ResponsePostDto> result = new ResultDto<>(200, "해당 게시물 조회 완료", responseDto);
+
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
 }
