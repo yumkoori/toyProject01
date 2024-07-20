@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import toyProject.toyProject01.board.adapter.out.persistence.entity.CategoryJpaEntity;
 import toyProject.toyProject01.board.adapter.out.persistence.entity.PostJpaEntity;
 import toyProject.toyProject01.board.application.port.in.command.UpdatePostCommand;
+import toyProject.toyProject01.board.application.port.out.DeletePostPort;
 import toyProject.toyProject01.board.application.port.out.LoadPostPort;
 import toyProject.toyProject01.board.application.port.out.SavePostPort;
 import toyProject.toyProject01.board.application.port.out.UpdatePostPort;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, UpdatePostPort {
+public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, UpdatePostPort, DeletePostPort {
 
     private final SpringDataPostRepository repository;
     private final PersistenceMapper persistenceMapper;
@@ -77,5 +78,10 @@ public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, Updat
 
         //도메인으로 변환
         return persistenceMapper.mapToPostDomain(findPostEntity);
+    }
+
+    @Override
+    public void deletePost(Long postId) {
+        repository.deleteById(postId);
     }
 }
