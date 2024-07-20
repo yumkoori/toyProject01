@@ -36,5 +36,10 @@ public class PostJpaEntity {
 
     private Date postDate;
 
+    public void update(CategoryJpaEntity category, String title, String postContent) {
+        this.category = category;
+        this.title = title;
+        this.postContent = postContent;
+    }
 
 }

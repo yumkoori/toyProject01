@@ -1,9 +1,15 @@
 package toyProject.toyProject01.board.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
+import toyProject.toyProject01.board.adapter.out.persistence.entity.CategoryJpaEntity;
 import toyProject.toyProject01.board.adapter.out.persistence.entity.PostJpaEntity;
+import toyProject.toyProject01.board.application.port.in.command.UpdatePostCommand;
 import toyProject.toyProject01.board.application.port.out.LoadPostPort;
 import toyProject.toyProject01.board.application.port.out.SavePostPort;
+import toyProject.toyProject01.board.application.port.out.UpdatePostPort;
+import toyProject.toyProject01.board.domain.Category;
 import toyProject.toyProject01.board.domain.Post;
 import toyProject.toyProject01.common.PersistenceAdapter;
 
@@ -13,9 +19,10 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class PostPersistenceAdapter implements SavePostPort, LoadPostPort {
+public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, UpdatePostPort {
 
     private final SpringDataPostRepository repository;
     private final PersistenceMapper persistenceMapper;
@@ -45,5 +52,30 @@ public class PostPersistenceAdapter implements SavePostPort, LoadPostPort {
                 .orElseThrow(() -> new NoSuchElementException("Not Found Post: " + postId));
 
         return persistenceMapper.mapToPostDomain(findPost);
+    }
+
+    @Override
+    public Post updatePost(Long targetId, Post updatePost) {
+
+        //영속성 관리 객체
+        PostJpaEntity findPostEntity = repository.findById(targetId)
+                .orElseThrow(() -> new NoSuchElementException("Not Found Post: " + targetId));
+
+        /*
+        * 임시 카테고리 엔티티 생성, 추후에 수정 예정
+        * */
+        CategoryJpaEntity categoryEntity = new CategoryJpaEntity(1L, "도서");
+
+        /*
+        * 영속성 관리 객체이기 때문에, 객체의 필드 값이 변화 되면 자동으로 DB에 update 쿼리 반영
+        * */
+        findPostEntity.update(
+                categoryEntity,
+                updatePost.getTitle(),
+                updatePost.getPostContent()
+        );
+
+        //도메인으로 변환
+        return persistenceMapper.mapToPostDomain(findPostEntity);
     }
 }
