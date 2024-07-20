@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import toyProject.toyProject01.board.adapter.in.web.dto.ResisterPostDto;
 import toyProject.toyProject01.board.adapter.in.web.dto.ResponsePostDto;
 import toyProject.toyProject01.board.adapter.in.web.dto.UpdatePostDto;
+import toyProject.toyProject01.board.application.port.in.DeletePostUseCase;
 import toyProject.toyProject01.board.application.port.in.LoadPostUseCase;
 import toyProject.toyProject01.board.application.port.in.ResisterPostUseCase;
 import toyProject.toyProject01.board.application.port.in.UpdatePostUseCase;
@@ -30,6 +31,7 @@ public class PostApiController {
     private final ResisterPostUseCase resisterPostUseCase;
     private final LoadPostUseCase loadPostUseCase;
     private final UpdatePostUseCase updatePostUseCase;
+    private final DeletePostUseCase deletePostUseCase;
 
     @PostMapping(value = "/posts")
     public ResponseEntity<ResultDto<ResponsePostDto>> resisterPost(@RequestBody ResisterPostDto request) {
@@ -97,6 +99,18 @@ public class PostApiController {
         ResponsePostDto responseDto = ResponseMapper.mapToPostDomain(updatePost);
         //응답 결과 객체 생성
         ResultDto<ResponsePostDto> result = new ResultDto<>(200, "게시물 수정 완료", responseDto);
+
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/posts/{postId}")
+    public ResponseEntity<ResultDto<Long>> deletePost(@PathVariable Long postId) {
+
+        //게시글 삭제
+        deletePostUseCase.deletePost(postId);
+
+        //응답 결과 객체 생성
+        ResultDto<Long> result = new ResultDto<>(200, "해당 게시물 조회 완료", postId);
 
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
