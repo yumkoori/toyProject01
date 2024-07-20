@@ -7,7 +7,10 @@ import toyProject.toyProject01.board.application.port.out.SavePostPort;
 import toyProject.toyProject01.board.domain.Post;
 import toyProject.toyProject01.common.PersistenceAdapter;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @PersistenceAdapter
@@ -34,5 +37,13 @@ public class PostPersistenceAdapter implements SavePostPort, LoadPostPort {
         return findAllPosts.stream()
                 .map(persistenceMapper::mapToPostDomain)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Post findPostId(Long postId) {
+        PostJpaEntity findPost = repository.findById(postId)
+                .orElseThrow(() -> new NoSuchElementException("Not Found Post: " + postId));
+
+        return persistenceMapper.mapToPostDomain(findPost);
     }
 }
