@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class ResponsePostDto {
 
-    private final String email;
+    private final Long memberNo;
     private final String category;
     private final String title;
     private final String content;

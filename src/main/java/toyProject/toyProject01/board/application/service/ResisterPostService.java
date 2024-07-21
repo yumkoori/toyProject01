@@ -40,7 +40,7 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
     @Override
     public Post registerPost(ResisterPostCommand resisterPostCommand) {
 
-        Member member = loadMemberPort.loadMemberWithEmail(resisterPostCommand.getEmail());
+        //Member member = loadMemberPort.loadMemberWithEmail(resisterPostCommand.getEmail());
 
         //임시 카테고리 생성
         //추후에 입력 모델에서 넘어온 카테고리Id를 통해서 카테고리 객체를 가져와서 매핑하도록 할 예정
@@ -48,7 +48,7 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
 
         Post postDomain = new Post(
                 null,
-                member,
+                resisterPostCommand.getMemberNo(),
                 category,
                 resisterPostCommand.getTitle(),
                 resisterPostCommand.getPostContent(),

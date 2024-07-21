@@ -7,6 +7,7 @@ import toyProject.toyProject01.board.adapter.out.persistence.entity.CategoryJpaE
 import toyProject.toyProject01.board.adapter.out.persistence.entity.PostJpaEntity;
 import toyProject.toyProject01.board.domain.Category;
 import toyProject.toyProject01.board.domain.Post;
+import toyProject.toyProject01.member.adapter.out.persistence.MemberJpaEntity;
 import toyProject.toyProject01.member.adapter.out.persistence.MemberMapper;
 
 @Component
@@ -15,15 +16,16 @@ import toyProject.toyProject01.member.adapter.out.persistence.MemberMapper;
 public class PersistenceMapper {
 
     //Domain -> JpaEntity
-    PostJpaEntity mapToPostJpaEntity(Post post) {
+    PostJpaEntity mapToPostJpaEntity(Post post, MemberJpaEntity memberJpaEntity) {
 
         return new PostJpaEntity(
                 post.getPostId(),
-                MemberMapper.mapToJpaEntity(post.getMember()),
+                memberJpaEntity,
                 mapToCategoryJpaEntity(post.getCategory()),
                 post.getTitle(),
                 post.getPostContent(),
-                post.getPostDate());
+                post.getPostDate()
+        );
     }
 
     //Domain -> JpaEntity
@@ -38,7 +40,7 @@ public class PersistenceMapper {
     Post mapToPostDomain(PostJpaEntity postJpaEntity) {
         return new Post(
                 postJpaEntity.getPostId(),
-                MemberMapper.mapToDomainMember(postJpaEntity.getMember()),
+                postJpaEntity.getMember().getNo(),
                 mapToCategoryDomain(postJpaEntity.getCategory()),
                 postJpaEntity.getTitle(),
                 postJpaEntity.getPostContent(),

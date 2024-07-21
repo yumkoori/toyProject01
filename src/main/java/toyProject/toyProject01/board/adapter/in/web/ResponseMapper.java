@@ -9,7 +9,7 @@ public class ResponseMapper {
 
     static ResponsePostDto mapToPostDomain(Post post) {
         return new ResponsePostDto (
-                post.getMember().getEmail(),
+                post.getMemberNo(),
                 post.getCategory().getType(),
                 post.getTitle(),
                 post.getPostContent(),

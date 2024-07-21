@@ -10,7 +10,7 @@ import java.util.Date;
 public class Post {
 
     private final Long postId;
-    private final Member member;
+    private final Long memberNo;
     private final Category category;
     private final String title;
     private final String postContent;

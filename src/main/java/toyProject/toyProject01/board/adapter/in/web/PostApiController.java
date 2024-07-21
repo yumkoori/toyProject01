@@ -33,11 +33,12 @@ public class PostApiController {
     private final UpdatePostUseCase updatePostUseCase;
     private final DeletePostUseCase deletePostUseCase;
 
-    @PostMapping(value = "/posts")
-    public ResponseEntity<ResultDto<ResponsePostDto>> resisterPost(@RequestBody ResisterPostDto request) {
+    @PostMapping(value = "/posts/{memberNo}")
+    public ResponseEntity<ResultDto<ResponsePostDto>> resisterPost(@PathVariable Long memberNo,
+                                                                   @RequestBody ResisterPostDto request) {
 
         ResisterPostCommand resisterPostCommand = new ResisterPostCommand(
-                request.getEmail(),
+                memberNo,
                 request.getCategoryId(),
                 request.getTitle(),
                 request.getPostContent(),

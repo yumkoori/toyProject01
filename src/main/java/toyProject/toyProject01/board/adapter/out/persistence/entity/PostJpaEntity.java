@@ -23,7 +23,7 @@ public class PostJpaEntity {
     private Long postId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email")
+    @JoinColumn(name = "no")
     private MemberJpaEntity member;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,5 +41,4 @@ public class PostJpaEntity {
         this.title = title;
         this.postContent = postContent;
     }
-
 }
