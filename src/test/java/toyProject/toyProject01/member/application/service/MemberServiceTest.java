@@ -79,6 +79,7 @@ public class MemberServiceTest {
     @Test
     public void testJoin_False() {
         MemberJpaEntity memberJpaEntity = new MemberJpaEntity(
+                null,
                 "email",
                 "1234",
                 "test",

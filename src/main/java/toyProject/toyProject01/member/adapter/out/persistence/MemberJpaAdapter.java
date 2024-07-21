@@ -30,14 +30,13 @@ public class MemberJpaAdapter implements
         MemberJpaEntity memberJpaEntity = memberRepository.findByMemberEmail(email)
                .orElseThrow(() -> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
 
-        return memberMapper.mapToDomainMember(memberJpaEntity);
+        return MemberMapper.mapToDomainMember(memberJpaEntity);
     }
 
     @Override
     public void saveMember(Member member) {
-        memberRepository.save(memberMapper.mapToJpaEntity(member));
+        memberRepository.save(MemberMapper.mapToJpaEntity(member));
     }
-
 
     @Override
     public void updateNickName(String email, String nickName) {
