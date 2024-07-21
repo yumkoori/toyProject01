@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface SpringDataMemberRepository extends JpaRepository <MemberJpaEntity, String> {
+public interface SpringDataMemberRepository extends JpaRepository <MemberJpaEntity, Long> {
 
     @Query("select m from MemberJpaEntity m where m.email = :email")
     Optional<MemberJpaEntity> findByMemberEmail(@Param("email") String email);

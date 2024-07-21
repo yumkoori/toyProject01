@@ -14,6 +14,9 @@ import java.util.Date;
 public class MemberJpaEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long no;
+
     private String email;
 
     private String pw;
