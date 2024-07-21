@@ -12,7 +12,7 @@ import java.util.Date;
 public class ResisterPostCommand extends SelfValidating<ResisterPostCommand> {
 
     @NotNull(message = "회원 정보는 필수입니다.")
-    private final String email;
+    private final Long memberNo;
 
     //@NotNull(message = "카테고리 지정은 필수입니다.")
     private final Long category;
@@ -28,8 +28,8 @@ public class ResisterPostCommand extends SelfValidating<ResisterPostCommand> {
     @NotNull
     private final Date postDate;
 
-    public ResisterPostCommand(String email, Long category, String title, String postContent, Date postDate) {
-        this.email = email;
+    public ResisterPostCommand(Long memberNo,Long category, String title, String postContent, Date postDate) {
+        this.memberNo = memberNo;
         this.category = category;
         this.title = title;
         this.postContent = postContent;

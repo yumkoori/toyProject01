@@ -13,6 +13,8 @@ import toyProject.toyProject01.board.application.port.out.UpdatePostPort;
 import toyProject.toyProject01.board.domain.Category;
 import toyProject.toyProject01.board.domain.Post;
 import toyProject.toyProject01.common.PersistenceAdapter;
+import toyProject.toyProject01.member.adapter.out.persistence.MemberJpaEntity;
+import toyProject.toyProject01.member.adapter.out.persistence.SpringDataMemberRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,22 +27,24 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, UpdatePostPort, DeletePostPort {
 
-    private final SpringDataPostRepository repository;
+    private final SpringDataPostRepository postRepository;
     private final PersistenceMapper persistenceMapper;
+    private final SpringDataMemberRepository memberRepository;  //MemberRepository 의존성 추가
 
     @Override
     public void savePost(Post post) {
 
-        PostJpaEntity postJpaEntity = persistenceMapper.mapToPostJpaEntity(post);
+        MemberJpaEntity memberEntity = memberRepository.findById(post.getMemberNo()).orElseThrow();
 
-        repository.save(postJpaEntity);
+        PostJpaEntity postJpaEntity = persistenceMapper.mapToPostJpaEntity(post , memberEntity);
 
+        postRepository.save(postJpaEntity);
     }
 
     //모든 게시판 데이터 조회후 반환
     @Override
     public List<Post> findPostAll() {
-        List<PostJpaEntity> findAllPosts = repository.findAll();
+        List<PostJpaEntity> findAllPosts = postRepository.findAll();
 
         return findAllPosts.stream()
                 .map(persistenceMapper::mapToPostDomain)
@@ -49,7 +53,7 @@ public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, Updat
 
     @Override
     public Post findPostId(Long postId) {
-        PostJpaEntity findPost = repository.findById(postId)
+        PostJpaEntity findPost = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("Not Found Post: " + postId));
 
         return persistenceMapper.mapToPostDomain(findPost);
@@ -59,7 +63,7 @@ public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, Updat
     public Post updatePost(Long targetId, Post updatePost) {
 
         //영속성 관리 객체
-        PostJpaEntity findPostEntity = repository.findById(targetId)
+        PostJpaEntity findPostEntity = postRepository.findById(targetId)
                 .orElseThrow(() -> new NoSuchElementException("Not Found Post: " + targetId));
 
         /*
@@ -82,6 +86,6 @@ public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, Updat
 
     @Override
     public void deletePost(Long postId) {
-        repository.deleteById(postId);
+        postRepository.deleteById(postId);
     }
 }

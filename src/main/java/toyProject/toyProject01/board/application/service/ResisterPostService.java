@@ -12,6 +12,7 @@ import toyProject.toyProject01.board.application.port.in.ResisterPostUseCase;
 import toyProject.toyProject01.board.application.port.in.UpdatePostUseCase;
 import toyProject.toyProject01.board.application.port.in.command.ResisterPostCommand;
 import toyProject.toyProject01.board.application.port.in.command.UpdatePostCommand;
+import toyProject.toyProject01.board.application.port.out.DeletePostPort;
 import toyProject.toyProject01.board.application.port.out.LoadPostPort;
 import toyProject.toyProject01.board.application.port.out.SavePostPort;
 import toyProject.toyProject01.board.application.port.out.UpdatePostPort;
@@ -34,12 +35,10 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
     private final SavePostPort savePostPort;
     private final LoadPostPort loadPostPort;
     private final UpdatePostPort updatePostPort;
-    private final DeletePostUseCase deletePostUseCase;
+    private final DeletePostPort deletePostPort;
 
     @Override
     public Post registerPost(ResisterPostCommand resisterPostCommand) {
-
-        Member member = loadMemberPort.loadMemberWithEmail(resisterPostCommand.getEmail());
 
         //임시 카테고리 생성
         //추후에 입력 모델에서 넘어온 카테고리Id를 통해서 카테고리 객체를 가져와서 매핑하도록 할 예정
@@ -47,7 +46,7 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
 
         Post postDomain = new Post(
                 null,
-                member,
+                resisterPostCommand.getMemberNo(),
                 category,
                 resisterPostCommand.getTitle(),
                 resisterPostCommand.getPostContent(),
@@ -92,6 +91,6 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
 
     @Override
     public void deletePost(Long postId) {
-        deletePostUseCase.deletePost(postId);
+        deletePostPort.deletePost(postId);
     }
 }

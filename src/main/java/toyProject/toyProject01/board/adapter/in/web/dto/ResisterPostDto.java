@@ -8,7 +8,6 @@ import java.util.Date;
 @AllArgsConstructor
 public class ResisterPostDto {
 
-    private final String email;
     private final Long categoryId;
     private final String title;
     private final String postContent;
