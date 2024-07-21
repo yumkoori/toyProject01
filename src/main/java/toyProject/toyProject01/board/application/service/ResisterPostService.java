@@ -12,6 +12,7 @@ import toyProject.toyProject01.board.application.port.in.ResisterPostUseCase;
 import toyProject.toyProject01.board.application.port.in.UpdatePostUseCase;
 import toyProject.toyProject01.board.application.port.in.command.ResisterPostCommand;
 import toyProject.toyProject01.board.application.port.in.command.UpdatePostCommand;
+import toyProject.toyProject01.board.application.port.out.DeletePostPort;
 import toyProject.toyProject01.board.application.port.out.LoadPostPort;
 import toyProject.toyProject01.board.application.port.out.SavePostPort;
 import toyProject.toyProject01.board.application.port.out.UpdatePostPort;
@@ -34,7 +35,7 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
     private final SavePostPort savePostPort;
     private final LoadPostPort loadPostPort;
     private final UpdatePostPort updatePostPort;
-    private final DeletePostUseCase deletePostUseCase;
+    private final DeletePostPort deletePostPort;
 
     @Override
     public Post registerPost(ResisterPostCommand resisterPostCommand) {
@@ -92,6 +93,6 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
 
     @Override
     public void deletePost(Long postId) {
-        deletePostUseCase.deletePost(postId);
+        deletePostPort.deletePost(postId);
     }
 }
