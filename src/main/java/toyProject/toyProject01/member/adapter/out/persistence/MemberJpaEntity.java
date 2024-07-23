@@ -32,4 +32,7 @@ public class MemberJpaEntity {
 
     }
 
+    public MemberJpaEntity(Long no) {
+        this.no = no;
+    }
 }

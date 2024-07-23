@@ -61,7 +61,7 @@ public class MemberServiceTest {
     public void testJoin_Success() {
         // Given
         JoinCommand JoinCommand = new JoinCommand(
-                "email",
+                "email1",
                 "1234",
                 "test",
                 Date.valueOf("1990-01-01"),
@@ -80,7 +80,7 @@ public class MemberServiceTest {
     public void testJoin_False() {
         MemberJpaEntity memberJpaEntity = new MemberJpaEntity(
                 null,
-                "email",
+                "email3",
                 "1234",
                 "test",
                 Date.valueOf("1990-01-01"),
