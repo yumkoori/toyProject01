@@ -19,4 +19,7 @@ public class CategoryJpaEntity {
     private String type;
 
 
+    public CategoryJpaEntity(Long categoryId) {
+        this.categoryId = categoryId;
+    }
 }

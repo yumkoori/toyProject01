@@ -29,14 +29,16 @@ public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, Updat
 
     private final SpringDataPostRepository postRepository;
     private final PersistenceMapper persistenceMapper;
-    private final SpringDataMemberRepository memberRepository;  //MemberRepository 의존성 추가
+    //private final SpringDataMemberRepository memberRepository;  //MemberRepository 의존성 추가
 
     @Override
     public void savePost(Post post) {
 
-        MemberJpaEntity memberEntity = memberRepository.findById(post.getMemberNo()).orElseThrow();
+        //MemberJpaEntity memberEntity = memberRepository.findById(post.getMemberNo()).orElseThrow();
 
-        PostJpaEntity postJpaEntity = persistenceMapper.mapToPostJpaEntity(post , memberEntity);
+        MemberJpaEntity memberJpaEntity = new MemberJpaEntity(post.getMemberNo());
+
+        PostJpaEntity postJpaEntity = persistenceMapper.mapToPostJpaEntity(post , memberJpaEntity);
 
         postRepository.save(postJpaEntity);
     }
