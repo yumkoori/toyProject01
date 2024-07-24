@@ -50,11 +50,12 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
                 category,
                 resisterPostCommand.getTitle(),
                 resisterPostCommand.getPostContent(),
-                resisterPostCommand.getPostDate()
+                null,
+                null
         );
 
-        savePostPort.savePost(postDomain);
-        return postDomain;
+        return savePostPort.savePost(postDomain);
+
     }
 
     @Override
@@ -82,6 +83,7 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
                 category,
                 updatePostCommand.getTitle(),
                 updatePostCommand.getPostContent(),
+                null,
                 null
         );
 

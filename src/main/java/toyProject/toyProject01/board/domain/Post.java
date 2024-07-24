@@ -16,6 +16,7 @@ public class Post {
     private final Category category;
     private final String title;
     private final String postContent;
-    private final Date postDate;
+    private final LocalDateTime createDateTime;
+    private final LocalDateTime updateDateTime;
 
 }

@@ -4,5 +4,5 @@ import toyProject.toyProject01.board.domain.Post;
 
 public interface SavePostPort {
 
-    void savePost(Post post);
+    Post savePost(Post post);
 }

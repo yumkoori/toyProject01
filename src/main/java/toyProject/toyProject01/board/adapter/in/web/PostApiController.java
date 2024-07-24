@@ -41,13 +41,12 @@ public class PostApiController {
                 memberNo,
                 request.getCategoryId(),
                 request.getTitle(),
-                request.getPostContent(),
-                request.getPostDate()
+                request.getPostContent()
         );
 
-        Post postDomain = resisterPostUseCase.registerPost(resisterPostCommand);
+        Post savedPost = resisterPostUseCase.registerPost(resisterPostCommand);
 
-        ResponsePostDto responseDto = ResponseMapper.mapToPostDomain(postDomain);
+        ResponsePostDto responseDto = ResponseMapper.mapToPostDomain(savedPost);
 
         ResultDto<ResponsePostDto> result = new ResultDto<>(200, "게시물 저장 완료", responseDto);
 

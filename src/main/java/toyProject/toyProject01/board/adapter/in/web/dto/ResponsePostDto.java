@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import toyProject.toyProject01.board.domain.Post;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -15,6 +16,6 @@ public class ResponsePostDto {
     private final String category;
     private final String title;
     private final String content;
-    private final Date date;
+    private final LocalDateTime createDateTime;
 
 }
