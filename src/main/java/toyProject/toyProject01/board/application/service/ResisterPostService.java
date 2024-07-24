@@ -10,6 +10,7 @@ import toyProject.toyProject01.board.application.port.in.DeletePostUseCase;
 import toyProject.toyProject01.board.application.port.in.LoadPostUseCase;
 import toyProject.toyProject01.board.application.port.in.ResisterPostUseCase;
 import toyProject.toyProject01.board.application.port.in.UpdatePostUseCase;
+import toyProject.toyProject01.board.application.port.in.command.GetPostCommand;
 import toyProject.toyProject01.board.application.port.in.command.ResisterPostCommand;
 import toyProject.toyProject01.board.application.port.in.command.UpdatePostCommand;
 import toyProject.toyProject01.board.application.port.out.DeletePostPort;
@@ -46,7 +47,7 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
 
         Post postDomain = new Post(
                 null,
-                resisterPostCommand.getMemberNo(),
+                new Post.PostMember(resisterPostCommand.getMemberNo(), null),
                 category,
                 resisterPostCommand.getTitle(),
                 resisterPostCommand.getPostContent(),
@@ -59,8 +60,13 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
     }
 
     @Override
-    public List<Post> findPostAll() {
-        return loadPostPort.findPostAll();
+    public List<Post> getPostList(GetPostCommand getPostCommand) {
+
+        return loadPostPort.findPostAll(
+                getPostCommand.getCurrentPage(),
+                getPostCommand.getSize(),
+                getPostCommand.getSortType()
+        );
     }
 
     @Override
