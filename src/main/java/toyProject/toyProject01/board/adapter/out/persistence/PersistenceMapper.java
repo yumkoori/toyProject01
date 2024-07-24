@@ -21,11 +21,10 @@ public class PersistenceMapper {
         return new PostJpaEntity(
                 post.getPostId(),
                 memberJpaEntity,
-                mapToCategoryJpaEntity(post.getCategory()),
                 post.getTitle(),
+                mapToCategoryJpaEntity(post.getCategory()),
                 post.getPostContent(),
                 post.getCreateDateTime()
-
         );
     }
 
@@ -44,8 +43,8 @@ public class PersistenceMapper {
                 mapToCategoryDomain(postJpaEntity.getCategory()),
                 postJpaEntity.getTitle(),
                 postJpaEntity.getPostContent(),
-                postJpaEntity.getCreateDateTime()
-
+                postJpaEntity.getCreateDateTime(),
+                postJpaEntity.getUpdateDateTime()
         );
     }
 

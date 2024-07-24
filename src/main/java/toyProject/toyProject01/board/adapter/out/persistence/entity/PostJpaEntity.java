@@ -42,10 +42,45 @@ public class PostJpaEntity {
     @CreatedDate
     private LocalDateTime createDateTime;
 
-        public void update(CategoryJpaEntity category, String title, String postContent) {
+    private LocalDateTime updateDateTime;
+
+    @Transient
+    private PostJpaEntity previousState;
+
+    public PostJpaEntity(Long postId,
+                         MemberJpaEntity member,
+                         String title,
+                         CategoryJpaEntity category,
+                         String postContent,
+                         LocalDateTime updateDateTime
+    ) {
+        this.postId = postId;
+        this.member = member;
+        this.title = title;
+        this.category = category;
+        this.postContent = postContent;
+        this.updateDateTime = updateDateTime;
+    }
+
+
+
+    @PostLoad
+    public void setPreviousState() {
+        previousState = new PostJpaEntity();
+        // copy fields
+    }
+
+    public void update(CategoryJpaEntity category, String title, String postContent) {
         this.category = category;
         this.title = title;
         this.postContent = postContent;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        if (!title.equals(previousState.title) || !postContent.equals(previousState.postContent)) {
+            updateDateTime = LocalDateTime.now();
+        }
     }
 
 

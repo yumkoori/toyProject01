@@ -17,6 +17,6 @@ public class Post {
     private final String title;
     private final String postContent;
     private final LocalDateTime createDateTime;
-    //private final LocalDateTime updateDate;
+    private final LocalDateTime updateDateTime;
 
 }
