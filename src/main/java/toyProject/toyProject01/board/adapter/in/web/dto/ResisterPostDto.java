@@ -11,5 +11,5 @@ public class ResisterPostDto {
     private final Long categoryId;
     private final String title;
     private final String postContent;
-    private final Date postDate;
+
 }

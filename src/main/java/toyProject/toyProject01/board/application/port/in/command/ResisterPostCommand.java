@@ -25,15 +25,12 @@ public class ResisterPostCommand extends SelfValidating<ResisterPostCommand> {
     @Size(min = 1, max = 50, message = "내용은 최소 1글자, 최대 50글자를 입력하세요.")
     private final String postContent;
 
-    @NotNull
-    private final Date postDate;
 
-    public ResisterPostCommand(Long memberNo,Long category, String title, String postContent, Date postDate) {
+    public ResisterPostCommand(Long memberNo,Long category, String title, String postContent) {
         this.memberNo = memberNo;
         this.category = category;
         this.title = title;
         this.postContent = postContent;
-        this.postDate = postDate;
 
         this.validateSelf();
     }

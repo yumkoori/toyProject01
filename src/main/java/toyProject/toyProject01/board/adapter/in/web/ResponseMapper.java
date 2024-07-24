@@ -13,7 +13,7 @@ public class ResponseMapper {
                 post.getCategory().getType(),
                 post.getTitle(),
                 post.getPostContent(),
-                post.getPostDate()
+                post.getCreateDateTime()
         );
     }
 }
