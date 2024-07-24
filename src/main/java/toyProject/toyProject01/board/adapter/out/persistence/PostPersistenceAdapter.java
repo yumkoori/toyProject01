@@ -2,6 +2,9 @@ package toyProject.toyProject01.board.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import toyProject.toyProject01.board.adapter.out.persistence.entity.CategoryJpaEntity;
 import toyProject.toyProject01.board.adapter.out.persistence.entity.PostJpaEntity;
@@ -33,7 +36,7 @@ public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, Updat
     @Override
     public Post savePost(Post post) {
 
-        MemberJpaEntity memberJpaEntity = new MemberJpaEntity(post.getMemberNo());
+        MemberJpaEntity memberJpaEntity = new MemberJpaEntity(post.getMember().getMemberNo());
 
         PostJpaEntity postJpaEntity = persistenceMapper.mapToPostJpaEntity(post , memberJpaEntity);
 
@@ -44,12 +47,18 @@ public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, Updat
 
     //모든 게시판 데이터 조회후 반환
     @Override
-    public List<Post> findPostAll() {
-        List<PostJpaEntity> findAllPosts = postRepository.findAll();
+    public List<Post> findPostAll(int currentPage, int size, String sortType) {
 
-        return findAllPosts.stream()
-                .map(persistenceMapper::mapToPostDomain)
-                .collect(Collectors.toList());
+        PageRequest pageRequest =
+                PageRequest.of(
+                currentPage,
+                size,
+                Sort.by(Sort.Direction.ASC, sortType)
+        );
+
+         return postRepository.findAll(pageRequest).stream()
+                 .map(persistenceMapper::mapToListPostDomain)
+                 .collect(Collectors.toList());
     }
 
     @Override

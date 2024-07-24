@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface LoadPostPort {
 
-    List<Post> findPostAll();
+    List<Post> findPostAll(int currentPage, int size, String sortType);
 
     Post findPostId(Long postId);
 }
