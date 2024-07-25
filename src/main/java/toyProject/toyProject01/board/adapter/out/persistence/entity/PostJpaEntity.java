@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -38,6 +39,9 @@ public class PostJpaEntity {
     private String title;
 
     private String postContent;
+
+    @Enumerated(EnumType.STRING)
+    private PostState postState = PostState.ACTIVE;
 
     @CreatedDate
     private LocalDateTime createDateTime;
@@ -83,5 +87,11 @@ public class PostJpaEntity {
         }
     }
 
+    public enum PostState {
+        ACTIVE,
+        DELETE,
+        HIDE,
+        REVIEW
+    }
 
 }

@@ -7,10 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import toyProject.toyProject01.board.adapter.in.web.dto.*;
-import toyProject.toyProject01.board.application.port.in.DeletePostUseCase;
-import toyProject.toyProject01.board.application.port.in.LoadPostUseCase;
-import toyProject.toyProject01.board.application.port.in.ResisterPostUseCase;
-import toyProject.toyProject01.board.application.port.in.UpdatePostUseCase;
+import toyProject.toyProject01.board.application.port.in.*;
 import toyProject.toyProject01.board.application.port.in.command.GetPostCommand;
 import toyProject.toyProject01.board.application.port.in.command.ResisterPostCommand;
 import toyProject.toyProject01.board.application.port.in.command.UpdatePostCommand;
@@ -109,12 +106,11 @@ public class PostApiController {
     @DeleteMapping("/posts/{postId}")
     public ResponseEntity<ResultDto<Long>> deletePost(@PathVariable Long postId) {
 
-        //게시글 삭제
-        deletePostUseCase.deletePost(postId);
+        deletePostUseCase.softDeletePost(postId);
 
-        //응답 결과 객체 생성
-        ResultDto<Long> result = new ResultDto<>(200, "해당 게시물 조회 완료", postId);
+        ResultDto<Long> result = new ResultDto<>(200, "해당 게시물 삭제 완료", postId);
 
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
+
 }

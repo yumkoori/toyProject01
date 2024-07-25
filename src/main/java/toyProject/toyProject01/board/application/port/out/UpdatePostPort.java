@@ -6,4 +6,5 @@ import toyProject.toyProject01.board.domain.Post;
 public interface UpdatePostPort {
 
     Post updatePost(Long targetId, Post updatePost);
+
 }
