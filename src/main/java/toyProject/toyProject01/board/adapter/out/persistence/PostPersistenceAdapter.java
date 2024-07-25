@@ -47,14 +47,14 @@ public class PostPersistenceAdapter implements
                 Sort.by(Sort.Direction.ASC, sortType)
         );
 
-         return postRepository.findAll(pageRequest).stream()
+         return postRepository.getPosts(pageRequest, PostJpaEntity.PostState.ACTIVE).stream()
                  .map(persistenceMapper::mapToListPostDomain)
                  .collect(Collectors.toList());
     }
 
     @Override
     public Post findPostId(Long postId) {
-        PostJpaEntity findPost = postRepository.findById(postId)
+        PostJpaEntity findPost = postRepository.getPostDetail(postId, PostJpaEntity.PostState.ACTIVE)
                 .orElseThrow(() -> new NoSuchElementException("Not Found Post: " + postId));
 
         return persistenceMapper.mapToPostDomain(findPost);
