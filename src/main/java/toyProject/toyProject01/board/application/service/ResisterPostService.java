@@ -97,7 +97,7 @@ public class ResisterPostService implements
 
     @Override
     public void softDeletePost(Long postId) {
-        changePostStatePort.delete(postId);
+        changePostStatePort.stateToDelete(postId);
     }
 
 }

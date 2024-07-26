@@ -110,7 +110,7 @@ public class PostApiController {
 
         ResultDto<Long> result = new ResultDto<>(200, "해당 게시물 삭제 완료", postId);
 
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }

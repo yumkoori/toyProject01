@@ -92,7 +92,7 @@ public class PostPersistenceAdapter implements
     }
 
     @Override
-    public void delete(Long postId) {
+    public void stateToDelete(Long postId) {
         PostJpaEntity findPostEntity = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("Not Found Post: " + postId));
 
