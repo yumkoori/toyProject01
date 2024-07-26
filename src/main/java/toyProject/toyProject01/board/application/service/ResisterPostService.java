@@ -2,26 +2,17 @@ package toyProject.toyProject01.board.application.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import toyProject.toyProject01.board.application.port.in.DeletePostUseCase;
-import toyProject.toyProject01.board.application.port.in.LoadPostUseCase;
-import toyProject.toyProject01.board.application.port.in.ResisterPostUseCase;
-import toyProject.toyProject01.board.application.port.in.UpdatePostUseCase;
+import toyProject.toyProject01.board.application.port.in.*;
 import toyProject.toyProject01.board.application.port.in.command.GetPostCommand;
 import toyProject.toyProject01.board.application.port.in.command.ResisterPostCommand;
 import toyProject.toyProject01.board.application.port.in.command.UpdatePostCommand;
-import toyProject.toyProject01.board.application.port.out.DeletePostPort;
-import toyProject.toyProject01.board.application.port.out.LoadPostPort;
-import toyProject.toyProject01.board.application.port.out.SavePostPort;
-import toyProject.toyProject01.board.application.port.out.UpdatePostPort;
+import toyProject.toyProject01.board.application.port.out.*;
 import toyProject.toyProject01.board.domain.Category;
 import toyProject.toyProject01.board.domain.Post;
 import toyProject.toyProject01.common.UseCase;
 import toyProject.toyProject01.member.application.port.out.LoadMemberPort;
-import toyProject.toyProject01.member.domain.Member;
 
 import java.util.List;
 
@@ -30,13 +21,15 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 @Slf4j
-public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase, UpdatePostUseCase , DeletePostUseCase {
+public class ResisterPostService implements
+        ResisterPostUseCase, LoadPostUseCase, UpdatePostUseCase , DeletePostUseCase {
 
     private final LoadMemberPort loadMemberPort;
     private final SavePostPort savePostPort;
     private final LoadPostPort loadPostPort;
     private final UpdatePostPort updatePostPort;
     private final DeletePostPort deletePostPort;
+    private final ChangePostStatePort changePostStatePort;
 
     @Override
     public Post registerPost(ResisterPostCommand resisterPostCommand) {
@@ -101,4 +94,10 @@ public class ResisterPostService implements ResisterPostUseCase, LoadPostUseCase
     public void deletePost(Long postId) {
         deletePostPort.deletePost(postId);
     }
+
+    @Override
+    public void softDeletePost(Long postId) {
+        changePostStatePort.stateToDelete(postId);
+    }
+
 }

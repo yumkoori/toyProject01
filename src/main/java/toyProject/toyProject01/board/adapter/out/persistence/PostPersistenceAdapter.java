@@ -2,33 +2,24 @@ package toyProject.toyProject01.board.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.transaction.annotation.Transactional;
 import toyProject.toyProject01.board.adapter.out.persistence.entity.CategoryJpaEntity;
 import toyProject.toyProject01.board.adapter.out.persistence.entity.PostJpaEntity;
-import toyProject.toyProject01.board.application.port.in.command.UpdatePostCommand;
-import toyProject.toyProject01.board.application.port.out.DeletePostPort;
-import toyProject.toyProject01.board.application.port.out.LoadPostPort;
-import toyProject.toyProject01.board.application.port.out.SavePostPort;
-import toyProject.toyProject01.board.application.port.out.UpdatePostPort;
-import toyProject.toyProject01.board.domain.Category;
+import toyProject.toyProject01.board.application.port.out.*;
 import toyProject.toyProject01.board.domain.Post;
 import toyProject.toyProject01.common.PersistenceAdapter;
 import toyProject.toyProject01.member.adapter.out.persistence.MemberJpaEntity;
-import toyProject.toyProject01.member.adapter.out.persistence.SpringDataMemberRepository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, UpdatePostPort, DeletePostPort {
+public class PostPersistenceAdapter implements
+        SavePostPort, LoadPostPort, UpdatePostPort, DeletePostPort, ChangePostStatePort {
 
     private final SpringDataPostRepository postRepository;
     private final PersistenceMapper persistenceMapper;
@@ -56,14 +47,14 @@ public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, Updat
                 Sort.by(Sort.Direction.ASC, sortType)
         );
 
-         return postRepository.findAll(pageRequest).stream()
+         return postRepository.getPosts(pageRequest, PostJpaEntity.PostState.ACTIVE).stream()
                  .map(persistenceMapper::mapToListPostDomain)
                  .collect(Collectors.toList());
     }
 
     @Override
     public Post findPostId(Long postId) {
-        PostJpaEntity findPost = postRepository.findById(postId)
+        PostJpaEntity findPost = postRepository.getPostDetail(postId, PostJpaEntity.PostState.ACTIVE)
                 .orElseThrow(() -> new NoSuchElementException("Not Found Post: " + postId));
 
         return persistenceMapper.mapToPostDomain(findPost);
@@ -94,8 +85,17 @@ public class PostPersistenceAdapter implements SavePostPort, LoadPostPort, Updat
         return persistenceMapper.mapToPostDomain(findPostEntity);
     }
 
+
     @Override
     public void deletePost(Long postId) {
         postRepository.deleteById(postId);
+    }
+
+    @Override
+    public void stateToDelete(Long postId) {
+        PostJpaEntity findPostEntity = postRepository.findById(postId)
+                .orElseThrow(() -> new NoSuchElementException("Not Found Post: " + postId));
+
+        findPostEntity.setPostState(PostJpaEntity.PostState.DELETE);
     }
 }
