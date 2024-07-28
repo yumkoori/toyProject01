@@ -54,6 +54,10 @@ public class CommentEntity {
         REVIEW
     }
 
+    public void updateToEditComment(String content) {
+        this.content = content;
+    }
+
     public CommentEntity(Long postId, String memberNickName, String content) {
         this.postId = postId;
         this.memberNickName = memberNickName;

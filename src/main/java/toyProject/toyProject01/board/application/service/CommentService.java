@@ -3,11 +3,14 @@ package toyProject.toyProject01.board.application.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+import toyProject.toyProject01.board.application.port.in.EditCommentUseCase;
 import toyProject.toyProject01.board.application.port.in.LoadCommentUseCase;
 import toyProject.toyProject01.board.application.port.in.RegisterCommentUseCase;
+import toyProject.toyProject01.board.application.port.in.command.EditCommentCommand;
 import toyProject.toyProject01.board.application.port.in.command.RegisterCommentCommand;
 import toyProject.toyProject01.board.application.port.out.LoadCommentsPort;
 import toyProject.toyProject01.board.application.port.out.RegisterCommentPort;
+import toyProject.toyProject01.board.application.port.out.UpdateCommentPort;
 import toyProject.toyProject01.board.domain.Comment;
 import toyProject.toyProject01.common.UseCase;
 
@@ -18,10 +21,11 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 @Slf4j
-public class CommentService implements RegisterCommentUseCase, LoadCommentUseCase {
+public class CommentService implements RegisterCommentUseCase, LoadCommentUseCase, EditCommentUseCase {
 
     private final RegisterCommentPort registerPort;
     private final LoadCommentsPort loadPort;
+    private final UpdateCommentPort updatePort;
 
     @Override
     public void registerComment(RegisterCommentCommand registerCommand) {
@@ -63,6 +67,13 @@ public class CommentService implements RegisterCommentUseCase, LoadCommentUseCas
         }
 
         return resultComments;
+    }
+
+    @Override
+    public void editComment(EditCommentCommand editCommand) {
+        Comment editComment = Comment.mapToCommentForEdit(editCommand.getCommentId(), editCommand.getContent());
+
+        updatePort.updateToEditComment(editComment);
     }
 }
 

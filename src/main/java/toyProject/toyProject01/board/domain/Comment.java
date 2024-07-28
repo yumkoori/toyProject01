@@ -32,4 +32,8 @@ public class Comment {
     ) {
         return new Comment(commentId, null, nickName, content, createTime, parentId, new ArrayList<>());
     }
+
+    public static Comment mapToCommentForEdit(Long commentId, String content) {
+        return new Comment(commentId, null, null, content, null, null, null);
+    }
 }
