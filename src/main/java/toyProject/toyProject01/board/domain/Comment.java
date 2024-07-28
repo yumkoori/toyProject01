@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,4 +23,13 @@ public class Comment {
         return new Comment(null, postId, nickName, content, null, parentId, null);
     }
 
+    public static Comment mapToCommentForGetComments (
+            Long commentId,
+            String nickName,
+            String content,
+            LocalDateTime createTime,
+            Long parentId
+    ) {
+        return new Comment(commentId, null, nickName, content, createTime, parentId, new ArrayList<>());
+    }
 }

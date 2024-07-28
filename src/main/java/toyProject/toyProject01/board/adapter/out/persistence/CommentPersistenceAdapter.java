@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @PersistenceAdapter
 @RequiredArgsConstructor
 @Slf4j
-public class CommentPersistenceAdapter implements RegisterCommentPort {
+public class CommentPersistenceAdapter implements RegisterCommentPort, LoadCommentsPort {
 
     private final SpringDataCommentRepository repository;
 
@@ -31,5 +31,13 @@ public class CommentPersistenceAdapter implements RegisterCommentPort {
         CommentEntity repliesEntity = PersistenceMapper.mapToCommentEntityForReplies(comment, parentEntity);
 
         repository.save(repliesEntity);
+    }
+
+    @Override
+    public List<Comment> getComments(Long postId) {
+        return repository.getComments(postId, CommentEntity.CommentState.ACTIVE)
+                .stream()
+                .map(PersistenceMapper::mapToCommentDomainForGetComments)
+                .collect(Collectors.toList());
     }
 }

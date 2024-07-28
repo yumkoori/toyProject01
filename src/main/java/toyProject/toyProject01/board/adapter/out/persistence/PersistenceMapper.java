@@ -89,4 +89,15 @@ public class PersistenceMapper {
         );
     }
 
+    public static Comment mapToCommentDomainForGetComments(CommentEntity commentEntity) {
+        Long parentId = (commentEntity.getParent() != null) ? commentEntity.getParent().getCommentId() : null;
+
+        return Comment.mapToCommentForGetComments(
+                commentEntity.getCommentId(),
+                commentEntity.getMemberNickName(),
+                commentEntity.getContent(),
+                commentEntity.getCreateTime(),
+                parentId
+        );
+    }
 }
