@@ -50,9 +50,11 @@ public class CommentEntity {
     public enum CommentState {
         ACTIVE,
         DELETE,
+        DELETE_PARENT,
         HIDE,
         REVIEW
     }
+
 
     public void updateToEditComment(String content) {
         this.content = content;
@@ -69,5 +71,17 @@ public class CommentEntity {
         this.memberNickName = memberNickName;
         this.content = content;
         this.parent = parent;
+    }
+
+     public boolean isDeletedParent(CommentState state) {
+        return state.equals(CommentState.DELETE_PARENT);
+    }
+
+    public void updateToDelete_Parent_State() {
+        this.state = CommentState.DELETE_PARENT;
+    }
+
+    public void updateToDelete_State() {
+        this.state = CommentState.DELETE;
     }
 }

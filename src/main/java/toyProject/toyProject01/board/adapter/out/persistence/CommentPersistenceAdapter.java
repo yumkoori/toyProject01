@@ -10,7 +10,6 @@ import toyProject.toyProject01.board.domain.Comment;
 import toyProject.toyProject01.common.PersistenceAdapter;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @PersistenceAdapter
@@ -37,7 +36,7 @@ public class CommentPersistenceAdapter implements RegisterCommentPort, LoadComme
 
     @Override
     public List<Comment> getComments(Long postId) {
-        return repository.getComments(postId, CommentEntity.CommentState.ACTIVE)
+        return repository.getComments(postId, CommentEntity.CommentState.ACTIVE, CommentEntity.CommentState.DELETE_PARENT)
                 .stream()
                 .map(PersistenceMapper::mapToCommentDomainForGetComments)
                 .collect(Collectors.toList());
@@ -48,5 +47,15 @@ public class CommentPersistenceAdapter implements RegisterCommentPort, LoadComme
         CommentEntity savedComment = repository.findById(editComment.getCommentId()).orElseThrow();
 
         savedComment.updateToEditComment(editComment.getContent());
+    }
+
+    @Override
+    public void updateToDeleteState(Long commentId) {
+        CommentEntity savedComment = repository.findById(commentId).orElseThrow();
+        if (savedComment.getParent() == null) {
+            savedComment.updateToDelete_Parent_State();
+        } else {
+            savedComment.updateToDelete_State();
+        }
     }
 }

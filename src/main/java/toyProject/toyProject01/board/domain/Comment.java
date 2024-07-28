@@ -36,4 +36,8 @@ public class Comment {
     public static Comment mapToCommentForEdit(Long commentId, String content) {
         return new Comment(commentId, null, null, content, null, null, null);
     }
+
+    public static Comment mapToDeletedParentComment(Long commentId) {
+        return new Comment(commentId, null, "(삭제)", "삭제된 내용입니다.", null, null, new ArrayList<>());
+    }
 }

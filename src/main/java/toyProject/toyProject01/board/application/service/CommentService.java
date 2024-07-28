@@ -3,9 +3,7 @@ package toyProject.toyProject01.board.application.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-import toyProject.toyProject01.board.application.port.in.EditCommentUseCase;
-import toyProject.toyProject01.board.application.port.in.LoadCommentUseCase;
-import toyProject.toyProject01.board.application.port.in.RegisterCommentUseCase;
+import toyProject.toyProject01.board.application.port.in.*;
 import toyProject.toyProject01.board.application.port.in.command.EditCommentCommand;
 import toyProject.toyProject01.board.application.port.in.command.RegisterCommentCommand;
 import toyProject.toyProject01.board.application.port.out.LoadCommentsPort;
@@ -21,7 +19,7 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 @Slf4j
-public class CommentService implements RegisterCommentUseCase, LoadCommentUseCase, EditCommentUseCase {
+public class CommentService implements RegisterCommentUseCase, LoadCommentUseCase, EditCommentUseCase, DeleteCommentUseCase {
 
     private final RegisterCommentPort registerPort;
     private final LoadCommentsPort loadPort;
@@ -65,7 +63,6 @@ public class CommentService implements RegisterCommentUseCase, LoadCommentUseCas
                 }
             }
         }
-
         return resultComments;
     }
 
@@ -74,6 +71,11 @@ public class CommentService implements RegisterCommentUseCase, LoadCommentUseCas
         Comment editComment = Comment.mapToCommentForEdit(editCommand.getCommentId(), editCommand.getContent());
 
         updatePort.updateToEditComment(editComment);
+    }
+
+    @Override
+    public void softDeleteComment(Long commentId) {
+        updatePort.updateToDeleteState(commentId);
     }
 }
 

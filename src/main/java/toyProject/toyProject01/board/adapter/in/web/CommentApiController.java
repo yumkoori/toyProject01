@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import toyProject.toyProject01.board.adapter.in.web.dto.EditCommentDto;
 import toyProject.toyProject01.board.adapter.in.web.dto.RegisterCommentDto;
 import toyProject.toyProject01.board.adapter.in.web.dto.ResponseCommentsDto;
+import toyProject.toyProject01.board.application.port.in.DeleteCommentUseCase;
 import toyProject.toyProject01.board.application.port.in.EditCommentUseCase;
 import toyProject.toyProject01.board.application.port.in.LoadCommentUseCase;
 import toyProject.toyProject01.board.application.port.in.RegisterCommentUseCase;
@@ -27,7 +28,7 @@ public class CommentApiController {
     private final RegisterCommentUseCase registerCommentUseCase;
     private final LoadCommentUseCase loadCommentUseCase;
     private final EditCommentUseCase editCommentUseCase;
-
+    private final DeleteCommentUseCase deleteCommentUseCase;
 
     @PostMapping(value = "/comments")
     public ResponseEntity<ResultDto<String>> RegisterComment(@RequestBody RegisterCommentDto request) {
@@ -68,6 +69,15 @@ public class CommentApiController {
 
         ResultDto<String> result = new ResultDto<>(200, "댓글 수정 완료", "ok");
 
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/comments/{commentId}")
+    public ResponseEntity<ResultDto<String>> deleteComment(@PathVariable Long commentId) {
+
+        deleteCommentUseCase.softDeleteComment(commentId);
+
+        ResultDto<String> result = new ResultDto<>(200, "댓글 삭제 완료", "ok");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

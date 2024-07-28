@@ -5,4 +5,6 @@ import toyProject.toyProject01.board.domain.Comment;
 public interface UpdateCommentPort {
 
     void updateToEditComment(Comment editComment);
+
+    void updateToDeleteState(Long commentId);
 }

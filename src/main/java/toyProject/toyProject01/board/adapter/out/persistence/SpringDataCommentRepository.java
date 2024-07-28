@@ -11,7 +11,10 @@ public interface SpringDataCommentRepository extends JpaRepository<CommentEntity
 
     @Query("SELECT c from CommentEntity " +
             "c left JOIN FETCH c.replies " +
-            "WHERE c.postId = :postId AND c.state = :state " +
+            "WHERE c.postId = :postId AND (c.state = :defaultState OR c.state = :deletedParentState) " +
             "ORDER BY c.createTime ASC, c.commentId ASC")
-    List<CommentEntity> getComments(@Param("postId")Long postId, @Param("state") CommentEntity.CommentState state);
+    List<CommentEntity> getComments(
+            @Param("postId")Long postId,
+            @Param("defaultState") CommentEntity.CommentState state,
+            @Param("deletedParentState")CommentEntity.CommentState deletedParent);
 }
