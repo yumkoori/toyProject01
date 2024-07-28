@@ -4,11 +4,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import toyProject.toyProject01.board.adapter.out.persistence.entity.CategoryJpaEntity;
+import toyProject.toyProject01.board.adapter.out.persistence.entity.CommentEntity;
 import toyProject.toyProject01.board.adapter.out.persistence.entity.PostJpaEntity;
 import toyProject.toyProject01.board.domain.Category;
+import toyProject.toyProject01.board.domain.Comment;
 import toyProject.toyProject01.board.domain.Post;
 import toyProject.toyProject01.member.adapter.out.persistence.MemberJpaEntity;
-import toyProject.toyProject01.member.adapter.out.persistence.MemberMapper;
 
 @Component
 @RequiredArgsConstructor
@@ -68,6 +69,23 @@ public class PersistenceMapper {
         return new Category(
                 categoryJpaEntity.getCategoryId(),
                 categoryJpaEntity.getType()
+        );
+    }
+
+    public static CommentEntity mapToCommentEntityForParent(Comment comment) {
+        return new CommentEntity(
+                comment.getPostId(),
+                comment.getNickName(),
+                comment.getContent()
+        );
+    }
+
+    public static CommentEntity mapToCommentEntityForReplies(Comment comment, CommentEntity parent) {
+        return new CommentEntity(
+                comment.getPostId(),
+                comment.getNickName(),
+                comment.getContent(),
+                parent
         );
     }
 
