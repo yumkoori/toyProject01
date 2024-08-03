@@ -29,7 +29,7 @@ public class CommentService implements RegisterCommentUseCase, LoadCommentUseCas
     public void registerComment(RegisterCommentCommand registerCommand) {
         Comment comment = Comment.mapToCommentForRegister(
                 registerCommand.getPostId(),
-                registerCommand.getNickName(),
+                registerCommand.getMemberNo(),
                 registerCommand.getContent(),
                 registerCommand.getParentId()
         );

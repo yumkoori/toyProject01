@@ -1,5 +1,6 @@
 package toyProject.toyProject01.board.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
 
@@ -13,14 +14,21 @@ public class Comment {
 
     private Long commentId;
     private Long postId;
-    private String nickName;
+    private CommentMember member;
     private String content;
     private LocalDateTime createTime;
     private Long parentId;
     private List<Comment> replies;
 
-    public static Comment mapToCommentForRegister(Long postId, String nickName, String content, Long parentId) {
-        return new Comment(null, postId, nickName, content, null, parentId, null);
+    @Getter
+    @AllArgsConstructor
+    public static class CommentMember {
+        private final Long memberNo;
+        private final String nickName;
+    }
+
+    public static Comment mapToCommentForRegister(Long postId, Long memberNo, String content, Long parentId) {
+        return new Comment(null, postId, new CommentMember(memberNo, null), content, null, parentId, null);
     }
 
     public static Comment mapToCommentForGetComments (
@@ -30,14 +38,14 @@ public class Comment {
             LocalDateTime createTime,
             Long parentId
     ) {
-        return new Comment(commentId, null, nickName, content, createTime, parentId, new ArrayList<>());
+        return new Comment(commentId, null, new CommentMember(null, nickName), content, createTime, parentId, new ArrayList<>());
     }
 
     public static Comment mapToCommentForEdit(Long commentId, String content) {
-        return new Comment(commentId, null, null, content, null, null, null);
+        return new Comment(commentId, null, new CommentMember(null,null), content, null, null, null);
     }
 
     public static Comment mapToDeletedParentComment(Long commentId) {
-        return new Comment(commentId, null, "(삭제)", "삭제된 내용입니다.", null, null, new ArrayList<>());
+        return new Comment(commentId, null, new CommentMember(null, null), "삭제된 내용입니다.", null, null, new ArrayList<>());
     }
 }

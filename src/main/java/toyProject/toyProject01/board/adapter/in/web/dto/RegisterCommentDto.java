@@ -9,7 +9,7 @@ import lombok.Getter;
 public class RegisterCommentDto {
 
     private final Long postId;
-    private final String nickName;
+    private final Long memberNo;
     private final String content;
     @Nullable
     private Long parentId;

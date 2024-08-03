@@ -10,7 +10,8 @@ import java.util.List;
 public interface SpringDataCommentRepository extends JpaRepository<CommentEntity, Long> {
 
     @Query("SELECT c from CommentEntity " +
-            "c left JOIN FETCH c.replies " +
+            "c LEFT JOIN FETCH c.replies " +
+            "LEFT JOIN FETCH c.member " +
             "WHERE c.postId = :postId AND (c.state = :defaultState OR c.state = :deletedParentState) " +
             "ORDER BY c.createTime ASC, c.commentId ASC")
     List<CommentEntity> getComments(

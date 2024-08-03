@@ -34,7 +34,7 @@ public class CommentApiController {
     public ResponseEntity<ResultDto<String>> RegisterComment(@RequestBody RegisterCommentDto request) {
         RegisterCommentCommand command = new RegisterCommentCommand(
                 request.getPostId(),
-                request.getNickName(),
+                request.getMemberNo(),
                 request.getContent(),
                 request.getParentId()
         );
@@ -63,7 +63,7 @@ public class CommentApiController {
 
     @PutMapping(value = "/comments")
     public ResponseEntity<ResultDto<String>> editComment(@RequestBody EditCommentDto request) {
-        EditCommentCommand command = new EditCommentCommand(request.getCommentId(), request.getContent());
+        EditCommentCommand command = new EditCommentCommand(request.getCommentId(), request.getContent(), request.getMemberNo());
 
         editCommentUseCase.editComment(command);
 

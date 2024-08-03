@@ -34,7 +34,7 @@ public class ResponseMapper {
         return new ResponseCommentsDto(
                 comment.getCommentId(),
                 comment.getParentId(),
-                comment.getNickName(),
+                comment.getMember().getNickName(),
                 comment.getContent(),
                 comment.getCreateTime(),
                 comment.getReplies()

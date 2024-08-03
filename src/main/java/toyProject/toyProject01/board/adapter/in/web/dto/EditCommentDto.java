@@ -9,4 +9,5 @@ public class EditCommentDto {
 
     private final Long commentId;
     private final String content;
+    private final Long memberNo;
 }

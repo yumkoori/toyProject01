@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import toyProject.toyProject01.member.adapter.out.persistence.MemberJpaEntity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,14 +22,15 @@ public class CommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "commentId")
     private Long commentId;
 
     @Column(name = "postId")
     private Long postId;
 
-    @Column(name = "nickName")
-    private String memberNickName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "memberNo")
+    private MemberJpaEntity member;
 
     @Column(name = "content")
     private String content;
@@ -60,15 +62,15 @@ public class CommentEntity {
         this.content = content;
     }
 
-    public CommentEntity(Long postId, String memberNickName, String content) {
+    public CommentEntity(Long postId, MemberJpaEntity member, String content) {
         this.postId = postId;
-        this.memberNickName = memberNickName;
+        this.member = member;
         this.content = content;
     }
 
-    public CommentEntity(Long postId, String memberNickName, String content, CommentEntity parent) {
+    public CommentEntity(Long postId, MemberJpaEntity member, String content, CommentEntity parent) {
         this.postId = postId;
-        this.memberNickName = memberNickName;
+        this.member = member;
         this.content = content;
         this.parent = parent;
     }

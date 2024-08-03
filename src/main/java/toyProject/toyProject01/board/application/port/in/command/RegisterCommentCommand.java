@@ -11,16 +11,16 @@ public class RegisterCommentCommand extends SelfValidating<RegisterCommentComman
 
     @NotNull
     private final Long postId;
-    @NotBlank
-    private final String nickName;
+    @NotNull
+    private final Long memberNo;
     @NotBlank
     private final String content;
     @Nullable
     private final Long parentId;
 
-    public RegisterCommentCommand(Long postId, String nickName, String content, @Nullable Long parentId) {
+    public RegisterCommentCommand(Long postId, Long memberNo, String content, @Nullable Long parentId) {
         this.postId = postId;
-        this.nickName = nickName;
+        this.memberNo = memberNo;
         this.content = content;
         this.parentId = parentId;
 

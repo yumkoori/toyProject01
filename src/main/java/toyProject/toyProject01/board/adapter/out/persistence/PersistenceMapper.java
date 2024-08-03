@@ -75,7 +75,7 @@ public class PersistenceMapper {
     public static CommentEntity mapToCommentEntityForParent(Comment comment) {
         return new CommentEntity(
                 comment.getPostId(),
-                comment.getNickName(),
+                new MemberJpaEntity(comment.getMember().getMemberNo()),
                 comment.getContent()
         );
     }
@@ -83,7 +83,7 @@ public class PersistenceMapper {
     public static CommentEntity mapToCommentEntityForReplies(Comment comment, CommentEntity parent) {
         return new CommentEntity(
                 comment.getPostId(),
-                comment.getNickName(),
+                new MemberJpaEntity(comment.getMember().getMemberNo()),
                 comment.getContent(),
                 parent
         );
@@ -94,11 +94,10 @@ public class PersistenceMapper {
 
         if (commentEntity.isDeletedParent(commentEntity.getState())) {
             return Comment.mapToDeletedParentComment(commentEntity.getCommentId());
-
         } else {
             return Comment.mapToCommentForGetComments(
                     commentEntity.getCommentId(),
-                    commentEntity.getMemberNickName(),
+                    commentEntity.getMember().getNickName(),
                     commentEntity.getContent(),
                     commentEntity.getCreateTime(),
                     parentId

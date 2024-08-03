@@ -12,10 +12,13 @@ public class EditCommentCommand extends SelfValidating<EditCommentCommand> {
     private final Long commentId;
     @NotBlank
     private final String content;
+    @NotNull
+    private final Long memberNo;
 
-    public EditCommentCommand(Long commentId, String content) {
+    public EditCommentCommand(Long commentId, String content, Long memberNo) {
         this.commentId = commentId;
         this.content = content;
+        this.memberNo = memberNo;
 
         this.validateSelf();
     }

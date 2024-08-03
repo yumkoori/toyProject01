@@ -22,7 +22,7 @@ class CommentServiceTest {
     void registerParentComment() {
         //given
         RegisterCommentCommand registerCommentCommand =
-                new RegisterCommentCommand(17L, "댓글", "test1", null);
+                new RegisterCommentCommand(1L, 1L, "부모댓글2", null);
 
         //when
         commentService.registerComment(registerCommentCommand);
@@ -36,7 +36,7 @@ class CommentServiceTest {
     void registerRepliesComment() {
         //given
         RegisterCommentCommand registerCommentCommand =
-                new RegisterCommentCommand(17L, "대댓글", "대댓글", 1L);
+                new RegisterCommentCommand(1L, 1L, "대댓글1", 4L);
 
         //when
         commentService.registerComment(registerCommentCommand);
@@ -44,5 +44,6 @@ class CommentServiceTest {
         //then
 
     }
+
 
 }
