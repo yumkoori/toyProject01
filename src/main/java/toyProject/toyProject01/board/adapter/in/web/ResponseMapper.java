@@ -7,6 +7,8 @@ import toyProject.toyProject01.board.adapter.in.web.dto.ResponsePostDto;
 import toyProject.toyProject01.board.domain.Comment;
 import toyProject.toyProject01.board.domain.Post;
 
+import java.util.stream.Collectors;
+
 @Component
 public class ResponseMapper {
 
@@ -33,11 +35,20 @@ public class ResponseMapper {
     public static ResponseCommentsDto mapToCommentsDto(Comment comment) {
         return new ResponseCommentsDto(
                 comment.getCommentId(),
-                comment.getParentId(),
                 comment.getMember().getNickName(),
                 comment.getContent(),
                 comment.getCreateTime(),
-                comment.getReplies()
+                comment.getReplies().stream().map(ResponseMapper::mapToReplyDto).collect(Collectors.toList())
+        );
+    }
+
+    public static ResponseCommentsDto.ResponseReplyDto mapToReplyDto(Comment comment) {
+        return new ResponseCommentsDto.ResponseReplyDto(
+                comment.getCommentId(),
+                comment.getParentId(),
+                comment.getMember().getNickName(),
+                comment.getContent(),
+                comment.getCreateTime()
         );
     }
 }
