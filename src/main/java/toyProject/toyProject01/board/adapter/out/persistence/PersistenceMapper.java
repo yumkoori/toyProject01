@@ -80,12 +80,12 @@ public class PersistenceMapper {
         );
     }
 
-    public static CommentEntity mapToCommentEntityForReplies(Comment comment, CommentEntity parent) {
+    public static CommentEntity mapToCommentEntityForReplies(Comment comment, Long parentId) {
         return new CommentEntity(
                 comment.getPostId(),
                 new MemberJpaEntity(comment.getMember().getMemberNo()),
                 comment.getContent(),
-                parent
+                parentId
         );
     }
 

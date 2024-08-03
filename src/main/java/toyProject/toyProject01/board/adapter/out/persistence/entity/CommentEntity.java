@@ -68,11 +68,15 @@ public class CommentEntity {
         this.content = content;
     }
 
-    public CommentEntity(Long postId, MemberJpaEntity member, String content, CommentEntity parent) {
+    public CommentEntity(Long postId, MemberJpaEntity member, String content, Long parentId) {
         this.postId = postId;
         this.member = member;
         this.content = content;
-        this.parent = parent;
+        this.parent = new CommentEntity(parentId);
+    }
+
+    public CommentEntity(Long parentId) {
+        this.commentId = parentId;
     }
 
      public boolean isDeletedParent(CommentState state) {

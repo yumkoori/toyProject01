@@ -27,10 +27,7 @@ public class CommentPersistenceAdapter implements RegisterCommentPort, LoadComme
 
     @Override
     public void saveRepliesComment(Comment comment) {
-        CommentEntity parentEntity = repository.findById(comment.getParentId()).orElseThrow();
-
-        CommentEntity repliesEntity = PersistenceMapper.mapToCommentEntityForReplies(comment, parentEntity);
-
+        CommentEntity repliesEntity = PersistenceMapper.mapToCommentEntityForReplies(comment, comment.getParentId());
         repository.save(repliesEntity);
     }
 
