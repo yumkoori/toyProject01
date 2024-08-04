@@ -1,9 +1,13 @@
 package toyProject.toyProject01.board.adapter.in.web;
 
 import org.springframework.stereotype.Component;
+import toyProject.toyProject01.board.adapter.in.web.dto.ResponseCommentsDto;
 import toyProject.toyProject01.board.adapter.in.web.dto.ResponseListPostDto;
 import toyProject.toyProject01.board.adapter.in.web.dto.ResponsePostDto;
+import toyProject.toyProject01.board.domain.Comment;
 import toyProject.toyProject01.board.domain.Post;
+
+import java.util.stream.Collectors;
 
 @Component
 public class ResponseMapper {
@@ -25,6 +29,26 @@ public class ResponseMapper {
                 post.getTitle(),
                 post.getMember().getNickName(),
                 post.getCreateDateTime()
+        );
+    }
+
+    public static ResponseCommentsDto mapToCommentsDto(Comment comment) {
+        return new ResponseCommentsDto(
+                comment.getCommentId(),
+                comment.getMember().getNickName(),
+                comment.getContent(),
+                comment.getCreateTime(),
+                comment.getReplies().stream().map(ResponseMapper::mapToReplyDto).collect(Collectors.toList())
+        );
+    }
+
+    public static ResponseCommentsDto.ResponseReplyDto mapToReplyDto(Comment comment) {
+        return new ResponseCommentsDto.ResponseReplyDto(
+                comment.getCommentId(),
+                comment.getParentId(),
+                comment.getMember().getNickName(),
+                comment.getContent(),
+                comment.getCreateTime()
         );
     }
 }

@@ -4,11 +4,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import toyProject.toyProject01.board.adapter.out.persistence.entity.CategoryJpaEntity;
+import toyProject.toyProject01.board.adapter.out.persistence.entity.CommentEntity;
 import toyProject.toyProject01.board.adapter.out.persistence.entity.PostJpaEntity;
 import toyProject.toyProject01.board.domain.Category;
+import toyProject.toyProject01.board.domain.Comment;
 import toyProject.toyProject01.board.domain.Post;
 import toyProject.toyProject01.member.adapter.out.persistence.MemberJpaEntity;
-import toyProject.toyProject01.member.adapter.out.persistence.MemberMapper;
 
 @Component
 @RequiredArgsConstructor
@@ -71,4 +72,36 @@ public class PersistenceMapper {
         );
     }
 
+    public static CommentEntity mapToCommentEntityForParent(Comment comment) {
+        return new CommentEntity(
+                comment.getPostId(),
+                new MemberJpaEntity(comment.getMember().getMemberNo()),
+                comment.getContent()
+        );
+    }
+
+    public static CommentEntity mapToCommentEntityForReplies(Comment comment, Long parentId) {
+        return new CommentEntity(
+                comment.getPostId(),
+                new MemberJpaEntity(comment.getMember().getMemberNo()),
+                comment.getContent(),
+                parentId
+        );
+    }
+
+    public static Comment mapToCommentDomainForGetComments(CommentEntity commentEntity) {
+        Long parentId = (commentEntity.getParent() != null) ? commentEntity.getParent().getCommentId() : null;
+
+        if (commentEntity.isDeletedParent(commentEntity.getState())) {
+            return Comment.mapToDeletedParentComment(commentEntity.getCommentId());
+        } else {
+            return Comment.mapToCommentForGetComments(
+                    commentEntity.getCommentId(),
+                    commentEntity.getMember().getNickName(),
+                    commentEntity.getContent(),
+                    commentEntity.getCreateTime(),
+                    parentId
+            );
+        }
+    }
 }
